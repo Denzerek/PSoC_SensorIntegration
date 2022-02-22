@@ -12,7 +12,7 @@
 #include "ringBuffer.h"
 #include "uart.h"
 
-bool bUartTxCmpltFlag = true;
+static volatile bool bUartTxCmpltFlag = true;
 ringStruct_s serialRing;
 reception_s	receivedData;
 ringQueue_s ringQueueHandle;
@@ -105,7 +105,35 @@ void serialDebugTransmit(char* transmitData)
 {
 	if(bUartTxCmpltFlag == false)
 	{
-		ringQueueStore(&ringQueueHandle,transmitData);
+
+		if(ringQueueStore(&ringQueueHandle,transmitData) == RING_QUEUE_OVERFLOW)
+		{
+			while(1)
+			{
+				if(bUartTxCmpltFlag == true)
+				{
+					/* Start transmit operation (do not check status) */
+					UART_Transmit("[ WARNING ] : OVERFLOW DETECTED in debug\r\n");
+
+					/*set the falg to false after transmission*/
+					bUartTxCmpltFlag = false;
+					break;
+				}
+			}
+			while(ringQueueHandle.ringQueueEmptyFlag == false)
+			{
+				if(bUartTxCmpltFlag == true)
+				{
+					char tempBuffer[50];
+					QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer);
+					/* Start transmit operation (do not check status) */
+					UART_Transmit(tempBuffer);
+
+					/*set the falg to false after transmission*/
+					bUartTxCmpltFlag = false;
+				}
+			}
+		}
 		return;
 	}
 

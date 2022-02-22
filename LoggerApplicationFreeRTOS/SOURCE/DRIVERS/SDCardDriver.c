@@ -47,6 +47,7 @@ void sdCardProcess()
             sdCardProcessState = CARD_IDLE;
 			break;
         case CARD_IDLE:
+            vTaskDelay(1);
         break;
 		case CARD_DETECT_ACTIVITY:
 			SDDRIVER_PRINT(" CARD_DETECT_ACTIVITY");
@@ -73,7 +74,7 @@ void sdCardProcess()
 			SDDRIVER_PRINT(" CARD_INITIALIZE");
 			if(cardInit() == CY_SD_HOST_SUCCESS)
 			{
-				sdCardProcessState = CARD_INSERTED_INITIALIZED;
+                sdCardProcessState = CARD_IDLE;
 			    cardStatus = CARD_INSERTED_INITIALIZED;
 				SDDRIVER_PRINT(" CARD_INSERTED_INITIALIZED");
 			}
@@ -86,5 +87,4 @@ void sdCardProcess()
 		case CARD_INSERTED_INITIALIZED:
 			break;
 	}
-    vTaskDelay(1);
 }

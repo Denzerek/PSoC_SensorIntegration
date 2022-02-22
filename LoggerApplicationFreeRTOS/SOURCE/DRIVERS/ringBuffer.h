@@ -39,6 +39,11 @@ typedef struct{
 }ringStruct_s;
 
 
+typedef enum{
+	RING_QUEUE_NORMAL,
+	RING_QUEUE_OVERFLOW
+}ringQueueStatus_t;
+
 typedef struct{
 	uint32_t ringFace;
 	uint32_t ringTail;
@@ -53,7 +58,7 @@ void ringStore_Byte(ringStruct_s *ring, uint8_t dataToStore);
 void ringBufferInit(ringStruct_s *ring);
 
 uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray);
-void ringQueueStore(ringQueue_s *ringQueue, char* dataToStore);
+ringQueueStatus_t ringQueueStore(ringQueue_s *ringQueue, char* dataToStore);
 void ringQueueInit(ringQueue_s *ringQueue);
 
 

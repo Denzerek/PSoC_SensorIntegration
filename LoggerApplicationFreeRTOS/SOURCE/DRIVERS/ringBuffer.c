@@ -24,25 +24,32 @@ void ringQueueInit(ringQueue_s *ringQueue)
 	EMPTYFLAG_Q = true;
 }
 
-
-void ringQueueStore(ringQueue_s *ringQueue, char* dataToStore)
+ringQueueStatus_t ringQueueStore(ringQueue_s *ringQueue, char* dataToStore)
 {
-	if( OVERFLOW_Q && (FACE_Q > TAIL_Q) )
-	{
-		serialPrint("[WARNING] : Ring Buffer overflow\r\n");
-		return;
-	}
 
 	strcpy( BUFFER_Q[FACE_Q] , dataToStore);
 	FACE_Q ++;
-
 	EMPTYFLAG_Q = false;
+	
+	if( OVERFLOW_Q && (FACE_Q == TAIL_Q ))
+	{
+		return RING_QUEUE_OVERFLOW;
+	}
+
 
 	if(FACE_Q >= RING_ROW_MAX)
 	{
+		if(TAIL_Q == 0)
+		{
+			FACE_Q = RING_ROW_MAX - 1;
+			return RING_QUEUE_OVERFLOW;
+		}
 		FACE_Q = 0;
-		OVERFLOW_Q = true;
+		if(FACE_Q < TAIL_Q)
+			OVERFLOW_Q = true;
 	}
+
+	return RING_QUEUE_NORMAL;
 
 }
 
@@ -53,7 +60,7 @@ uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray)
 {
 	if(EMPTYFLAG_Q == true || ( FACE_Q == 0 && TAIL_Q == 0))
 	{
-		serialPrint("[WARNING] : Ring Queue underflow\r\n");
+		serialPrint("[WARNING] : Ring Queue underflow1\r\n");
 		return 0;
 	}
 
@@ -67,16 +74,21 @@ uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray)
 		TAIL_Q ++;
 	}
 
-	if(TAIL_Q == FACE_Q)
+	if((TAIL_Q == FACE_Q ) && ( OVERFLOW_Q == false))
 	{
 		TAIL_Q = FACE_Q = 0;
-		OVERFLOW_Q = false;
+		
 		EMPTYFLAG_Q = true;
 	}
 
-	if(TAIL_Q >= RING_ROW_MAX)
+	if(TAIL_Q >= RING_ROW_MAX  )
 	{
 		TAIL_Q = 0;
+		if(FACE_Q == 0)
+		{
+			EMPTYFLAG_Q = true;
+		}
+		else if(TAIL_Q < FACE_Q)
 		OVERFLOW_Q = false;
 	}
 }
@@ -87,7 +99,7 @@ uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray)
  * ==================================================================================================================
  */
 
-
+#if 1
 void ringBufferInit(ringStruct_s *ring)
 {
 	FACE_R = 0;
@@ -197,3 +209,4 @@ uint8_t ringRetrieve_ByteArray(ringStruct_s *ring, uint8_t* byteArray,uint8_t ar
 	return arraySize;
 }
 
+#endif

@@ -52,11 +52,9 @@ EventGroupHandle_t xCreatedEventGroup;
 
 int main(void)
 {
-    cy_rslt_t result;
 
     /* Initialize the device and board peripherals */
-    result = cybsp_init() ;
-    if (result != CY_RSLT_SUCCESS)
+    if (cybsp_init() != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
     }
