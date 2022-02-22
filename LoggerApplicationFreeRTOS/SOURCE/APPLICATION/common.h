@@ -18,6 +18,8 @@
 #include "string.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
+#include "event_groups.h"
 
 
 #define UART_TRANSMIT(x)		serialDebugTransmit(x)
@@ -28,9 +30,15 @@
 #define true 1
 
 
+#define DEBUG_TASK_EVENT_BIT        ( 1 << 0 )
+
+
 typedef enum
 {
-	DEBUG_TASKMSG
+	DEBUG_TASKMSG,
+	SDCARD_TASKMSG,
+	SDDRIVER_TASKMSG,
+	SDHAL_TASKMSG
 }dbgHeader_t;
 
 typedef struct {
@@ -38,7 +46,6 @@ typedef struct {
 	char stringHeader[20];
 }taskMsgStruct_s;
 
-
-
+extern EventGroupHandle_t xCreatedEventGroup;
 
 #endif /* SOURCE_APPLICATION_COMMON_H_ */

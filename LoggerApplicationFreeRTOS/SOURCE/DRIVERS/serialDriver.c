@@ -83,17 +83,21 @@ uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer)
 
 }
 
-void SerialDebug_TASK()
+uint8_t SerialDebug_TASK()
 {
-
+	uint8_t allTransmissionComplete = false;
 	if(bUartTxCmpltFlag == true && ringQueueHandle.ringQueueEmptyFlag == false)
 	{
 		char tempBuffer[50];
 		QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer);
 		serialDebugTransmit(tempBuffer);
 	}
-
-
+	else
+	if (ringQueueHandle.ringQueueEmptyFlag == true)
+	{
+		allTransmissionComplete = true;
+	}
+	return allTransmissionComplete;
 }
 
 

@@ -44,7 +44,11 @@
  *******************************************************************************/
 #include "common.h"
 #include "debug.h"
+#include "sdCardTask.h"
 
+
+
+EventGroupHandle_t xCreatedEventGroup;
 
 int main(void)
 {
@@ -57,11 +61,29 @@ int main(void)
         CY_ASSERT(0);
     }
 
-    serialDebugInit();
 
     __enable_irq();
 
-    xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 6, 0);
+  /* Attempt to create the event group. */
+    xCreatedEventGroup = xEventGroupCreate();
+
+    /* Was the event group created successfully? */
+    if( xCreatedEventGroup == NULL )
+    {
+        /* The event group was not created because there was insufficient
+        FreeRTOS heap available. */
+    }
+    else
+    {
+        /* The event group was created. */
+        xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
+    }
+
+
+
+    xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
+
+    xTaskCreate(sdCardTask,"SD CARD TASK",8*1024,0,5,0);
 
     vTaskStartScheduler();
 

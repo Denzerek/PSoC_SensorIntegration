@@ -28,6 +28,6 @@ typedef struct{
 void serialDebugInit(void);
 void serialDebugTransmit(char* transmitData);
 uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer);
-void SerialDebug_TASK();
+uint8_t SerialDebug_TASK();
 
 #endif /* SOURCE_DRIVER_SERIALDRIVER_H_ */

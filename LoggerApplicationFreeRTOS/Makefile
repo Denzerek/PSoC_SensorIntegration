@@ -93,7 +93,7 @@ SOURCES=
 INCLUDES=
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES=
+DEFINES+=CYHAL_DISABLE_WEAK_FUNC_IMPL
 
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
