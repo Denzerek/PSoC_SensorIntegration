@@ -217,14 +217,7 @@ cy_en_sd_host_status_t cardInit()
 		decode(status);
 		return status;
 	}
-
-	// SD_printSDHC_1_cardType();
-	// SD_printSDHC_1_cardCapacity();
-	SDHAL_PRINT(" SDCard initialized");
 	return status;
-
-
-
 }
 
 

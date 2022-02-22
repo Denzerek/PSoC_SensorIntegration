@@ -8,7 +8,10 @@ sdCardProcess_t sdCardProcessState = CARD_ABSENT;
 
 void SD_Host_CardDetect_Isr()
 {
-	sdCardProcessState = CARD_DETECT_ACTIVITY;
+    if(sdCardProcessState != CARD_DETECT_DEBOUNC_WAIT)
+	{
+        sdCardProcessState = CARD_DETECT_ACTIVITY;
+    }
 	cardDetectFlag = 1;
 	CARD_DETECT_TIMER_RUN();
 	Cy_GPIO_ClearInterrupt(SDHC1_CARD_DETECT_N_NUM_PORT, SDHC1_CARD_DETECT_N_NUM_PIN);
@@ -21,7 +24,6 @@ void cardDetectTimer_ISR()
 	if (0UL != (CY_TCPWM_INT_ON_TC & interrupts))
 	{
 		/* Handle the Terminal Count event */
-		SDDRIVER_PRINT("Timer interrupt TC");
 		sdCardProcessState = CARD_INSERT_CHECK;
 		cardDetectTimerExpiredStatus = 1;
 	}
@@ -84,5 +86,5 @@ void sdCardProcess()
 		case CARD_INSERTED_INITIALIZED:
 			break;
 	}
-            vTaskDelay(100);
+    vTaskDelay(1);
 }
