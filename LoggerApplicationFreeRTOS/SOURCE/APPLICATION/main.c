@@ -45,6 +45,7 @@
 #include "common.h"
 #include "debug.h"
 #include "sdCardTask.h"
+#include "RTCTask.h"
 
 
 
@@ -78,10 +79,11 @@ int main(void)
     }
 
 
-
     xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
 
     xTaskCreate(sdCardTask,"SD CARD TASK",8*1024,0,5,0);
+    
+    xTaskCreate(RTCTask,"RTC TASK",8*1024,0,5,0);
 
     vTaskStartScheduler();
 

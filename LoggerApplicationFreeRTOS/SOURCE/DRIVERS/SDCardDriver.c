@@ -38,7 +38,7 @@ void initSDCardProcess()
 	sdCardProcessState=CARD_INSERT_CHECK;
 }
 
-void sdCardProcess()
+sdCardProcess_t sdCardProcess()
 {
 	switch(sdCardProcessState)
 	{
@@ -87,4 +87,5 @@ void sdCardProcess()
 		case CARD_INSERTED_INITIALIZED:
 			break;
 	}
+	return sdCardProcessState;
 }

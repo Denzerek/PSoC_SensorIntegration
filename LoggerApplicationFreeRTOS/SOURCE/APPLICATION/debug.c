@@ -21,7 +21,11 @@ taskMsgStruct_s taskMsgCollection[] = {
 		{DEBUG_TASKMSG,"[ DEBUG ] : "},
 		{SDCARD_TASKMSG,"[ SD TASK ] : "},
 		{SDDRIVER_TASKMSG,"[ SD DRIVER ] : "},
-		{SDHAL_TASKMSG,"[ SD HAL ] : "}
+		{SDHAL_TASKMSG,"[ SD HAL ] : "},
+		{RTCDRIVER_TASKMSG,"[ RTC DRIVER ] : "},
+		{I2CHAL_TASKMSG,"[ I2C HAL] : "},
+		{I2CDRIVER_TASKMSG,"[ I2C DRIVER ] : "},
+		{RTCTASK_TASKMSG,"[ RTC TASK ] : "}
 };
 
 

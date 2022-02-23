@@ -39,6 +39,6 @@ typedef enum{
 }sdCardProcess_t;
 
 void initSDCardProcess();
-void sdCardProcess();
+sdCardProcess_t sdCardProcess();
 
 #endif

@@ -79,8 +79,10 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
-DISABLE_COMPONENTS += BSP_DESIGN_MODUS
-COMPONENTS += CUSTOM_DESIGN_MODUS FREERTOS
+ DISABLE_COMPONENTS += BSP_DESIGN_MODUS
+ COMPONENTS += CUSTOM_DESIGN_MODUS FREERTOS
+#DISABLE_COMPONENTS=
+#COMPONENTS+=FREERTOS
 
 # By default the build system automatically looks in the Makefile's directory
 # tree for source code and builds it. The SOURCES variable can be used to
