@@ -30,8 +30,9 @@ void RTCTask()
 
     while(1)
     {
-        vTaskDelay(1000);
-        RTCTASK_PRINTF("\r%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
+        // vTaskDelay(1000);
+        // RTCTASK_PRINTF("%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
+        rtc_displayAllTime();
         vTaskDelay(1000);
     }
 }
@@ -94,6 +95,7 @@ void rtc_getAllRegister(RTCTimeRegisterStruct_s *customTime)
 {
     i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,customTime,sizeof(RTCTimeRegisterStruct_s));
 }
+
 void rtc_setCustom(RTCTimeRegisterStruct_s customTime)
 {
     i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,&customTime,sizeof(customTime));
@@ -159,7 +161,10 @@ uint8_t rtc_displayAllTime()
 {
     RTCTimeRegisterStruct_s time;
     writeBuffer[0] = RTC_SECONDS_REGISTER;
-    i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,(uint8_t*)&time,sizeof(time));
+    if(i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,(uint8_t*)&time,sizeof(time)) != I2C_DRIVER_RW_SUCCESS)
+    {
+        return I2C_DRIVER_RW_FAILED;
+    }
 
     // printf("\r %d %d %d %d %d %d %d %d %d %d %d %d %d %d ",time.century,
     //         time.tenthMonth,time.month,time.tenthDate,time.date,time.day,time.hour_12_24,

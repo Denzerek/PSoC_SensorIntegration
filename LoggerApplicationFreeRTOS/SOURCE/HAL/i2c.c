@@ -15,7 +15,7 @@ void I2C_Isr(void)
     Cy_SCB_I2C_MasterInterrupt(I2C_SCB3_HW, &cy_stc_scb_i2c_context);
 }
 
-void i2c_init()
+void i2c_init(cy_cb_scb_i2c_handle_events_t eventCallback)
 {
 
     if(CY_SCB_I2C_SUCCESS != Cy_SCB_I2C_Init(I2C_SCB3_HW,&I2C_SCB3_config,&cy_stc_scb_i2c_context))
@@ -33,6 +33,8 @@ void i2c_init()
     (void) Cy_SysInt_Init(&i2cIntrConfig, &I2C_Isr);
 
     NVIC_EnableIRQ(i2cIntrConfig.intrSrc);
+
+    Cy_SCB_I2C_RegisterEventCallback(I2C_SCB3_HW,eventCallback,&cy_stc_scb_i2c_context);
 
     Cy_SCB_I2C_Enable(I2C_SCB3_HW);
 
@@ -56,3 +58,11 @@ cy_en_scb_i2c_status_t i2c_scb3_master_read(cy_stc_scb_i2c_master_xfer_config_t 
 {
     return Cy_SCB_I2C_MasterRead(I2C_SCB3_HW, transfer, &cy_stc_scb_i2c_context);
 }
+
+
+void i2c_scb3_master_clearInterrupt(uint32_t event)
+{
+    return Cy_SCB_ClearMasterInterrupt(I2C_SCB3_HW, event);
+}
+
+
