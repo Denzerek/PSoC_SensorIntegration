@@ -15,12 +15,15 @@ void I2C_Isr(void)
     Cy_SCB_I2C_MasterInterrupt(I2C_SCB3_HW, &cy_stc_scb_i2c_context);
 }
 
-void i2c_init(cy_cb_scb_i2c_handle_events_t eventCallback)
+cy_en_scb_i2c_status_t i2c_init(cy_cb_scb_i2c_handle_events_t eventCallback)
 {
 
-    if(CY_SCB_I2C_SUCCESS != Cy_SCB_I2C_Init(I2C_SCB3_HW,&I2C_SCB3_config,&cy_stc_scb_i2c_context))
+	cy_en_scb_i2c_status_t status;
+	status = Cy_SCB_I2C_Init(I2C_SCB3_HW,&I2C_SCB3_config,&cy_stc_scb_i2c_context);
+    if(CY_SCB_I2C_SUCCESS != status)
     {
         I2CHAL_PRINT("I2C Init error");
+        return status;
     }
     
     /* Populate configuration structure (code specific for CM4) */
@@ -37,6 +40,8 @@ void i2c_init(cy_cb_scb_i2c_handle_events_t eventCallback)
     Cy_SCB_I2C_RegisterEventCallback(I2C_SCB3_HW,eventCallback,&cy_stc_scb_i2c_context);
 
     Cy_SCB_I2C_Enable(I2C_SCB3_HW);
+
+    return status;
 
 
 }

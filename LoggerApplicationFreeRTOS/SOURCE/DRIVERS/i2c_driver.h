@@ -26,7 +26,12 @@ typedef enum{
 }i2cDriverState_t;
 
 
-void i2c_driver_init();
+cy_en_scb_i2c_status_t i2c_driver_init();
+
+bool getI2CErrorFlag();
+void clearI2CErrorFlag();
+uint32_t checkI2CHardwareErrorStatus();
+
 
 i2cDriverState_t i2c_readByte(uint8_t address,uint8_t registerAddress,uint8_t* readData);
 i2cDriverState_t i2c_readBurst(uint8_t slaveAddress,uint8_t* registerAddressBuffer,uint8_t registerAddressSize,uint8_t* readDataBuffer,uint8_t readSize);

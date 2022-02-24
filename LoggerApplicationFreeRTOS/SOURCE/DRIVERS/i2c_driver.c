@@ -49,8 +49,8 @@ i2cDriverState_t i2c_interrupt_eventsCallback(uint32_t event)
 {
     if((CY_SCB_I2C_MASTER_ERR_EVENT & event ) == CY_SCB_I2C_MASTER_ERR_EVENT)
     {
-        i2cStatusDecode(i2c_scb3_master_get_status());
-        I2CDRIVER_PRINTF("I2C hardware ERROR %X",i2c_scb3_master_get_status());
+        // i2cStatusDecode(i2c_scb3_master_get_status());
+        // I2CDRIVER_PRINTF("I2C hardware ERROR %X",i2c_scb3_master_get_status());
         hardwareErrorFlag = true;
         // Cy_SCB_ClearMasterInterrupt();
         // i2c_scb3_master_clearInterrupt(CY_SCB_I2C_MASTER_ERR_EVENT);
@@ -58,9 +58,37 @@ i2cDriverState_t i2c_interrupt_eventsCallback(uint32_t event)
     }
 }
 
-void i2c_driver_init()
+uint32_t checkI2CHardwareErrorStatus()
 {
-    i2c_init(i2c_interrupt_eventsCallback);
+    uint32_t errors = i2c_scb3_master_get_status();
+    if((errors & CY_SCB_I2C_MASTER_ADDR_NAK) == CY_SCB_I2C_MASTER_ADDR_NAK)
+    {
+        // I2CDRIVER_PRINT("HW ERROR CY_SCB_I2C_MASTER_ADDR_NAK");
+        return CY_SCB_I2C_MASTER_ADDR_NAK;
+    }
+    
+    if((errors & CY_SCB_I2C_MASTER_ARB_LOST) == CY_SCB_I2C_MASTER_ARB_LOST)
+    {
+        // I2CDRIVER_PRINT("HW ERROR CY_SCB_I2C_MASTER_ARB_LOST");
+        return CY_SCB_I2C_MASTER_ARB_LOST;
+    }
+    return 0;
+
+}
+
+bool getI2CErrorFlag()
+{
+    return hardwareErrorFlag;
+}
+
+void clearI2CErrorFlag()
+{
+    hardwareErrorFlag = false;
+}
+
+cy_en_scb_i2c_status_t i2c_driver_init()
+{
+    return i2c_init(i2c_interrupt_eventsCallback);
 }
 
 
@@ -82,7 +110,7 @@ i2cDriverState_t i2c_readBurst(uint8_t slaveAddress,uint8_t* registerAddressBuff
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     /* Configure read transaction */
     transfer.buffer       = readDataBuffer;
@@ -96,7 +124,7 @@ i2cDriverState_t i2c_readBurst(uint8_t slaveAddress,uint8_t* registerAddressBuff
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     return I2C_DRIVER_RW_SUCCESS;
 }
@@ -122,7 +150,7 @@ i2cDriverState_t i2c_writeBurst(uint8_t address,uint8_t registerAddress,uint8_t*
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     free(writeBuffer);
     return I2C_DRIVER_RW_SUCCESS;
@@ -147,7 +175,7 @@ i2cDriverState_t i2c_writeByte(uint8_t address,uint8_t registerAddress,uint8_t w
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     return I2C_DRIVER_RW_SUCCESS;
 }
@@ -172,7 +200,7 @@ i2cDriverState_t i2c_readByte(uint8_t address,uint8_t registerAddress,uint8_t* r
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     /* Configure read transaction */
     transfer.buffer       = readData;
@@ -186,7 +214,7 @@ i2cDriverState_t i2c_readByte(uint8_t address,uint8_t registerAddress,uint8_t* r
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);
+        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     return I2C_DRIVER_RW_SUCCESS;
 }

@@ -10,9 +10,9 @@
 
 #include "common.h"
 
-#define RING_MAX		70
+#define RING_MAX		90
 #define RING_ROW_MAX	40
-#define RING_COL_MAX	70
+#define RING_COL_MAX	RING_MAX
 
 //Ring is for reception
 #define FACE_R			ring->ringFace
