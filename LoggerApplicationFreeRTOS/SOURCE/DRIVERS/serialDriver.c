@@ -88,7 +88,7 @@ uint8_t SerialDebug_TASK()
 	uint8_t allTransmissionComplete = false;
 	if(bUartTxCmpltFlag == true && ringQueueHandle.ringQueueEmptyFlag == false)
 	{
-		char tempBuffer[50];
+		char tempBuffer[RING_MAX];
 		QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer);
 		serialDebugTransmit(tempBuffer);
 	}

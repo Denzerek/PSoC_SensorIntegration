@@ -64,7 +64,7 @@ void RTCTask()
             }
         	break;
         case RTC_COMM_ERROR:
-    	    RTCTASK_PRINT("RTC_COMM_ERROR");
+    	    RTCTASK_PRINT("RTC_COMM_ERROR:Please check hardware connections");
             checkI2CHardwareErrorStatus();
     		rtcProcess = RTC_IDLE;
         	break;

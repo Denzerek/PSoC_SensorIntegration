@@ -46,9 +46,9 @@ void debugTask()
 	DEBUG_PRINT("Serial Debug initialized");
 	DEBUG_PRINTF("BUILD DATE : %s",__DATE__);
 	DEBUG_PRINTF("BUILD TIME : %s",__TIME__);
-	DEBUG_PRINT("****************************************");
-	DEBUG_PRINT("********  Logger Application ***********");
-	DEBUG_PRINT("*****************************************");
+	DEBUG_PRINT("*******************************************");
+	DEBUG_PRINT("**********  Logger Application ************");
+	DEBUG_PRINT("*******************************************");
 
 	while(!SerialDebug_TASK()){}
 
