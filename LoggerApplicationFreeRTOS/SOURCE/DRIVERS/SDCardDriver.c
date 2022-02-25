@@ -135,7 +135,7 @@ void sdCardRead(uint32_t readStartAddress,uint32_t* dataToRead)
 		SDDRIVER_PRINT("SD card read operation complete\r\n");
 		SDDRIVER_PRINT("Data Read Back :");
 		
-		for(int i=0;i<CY_SD_HOST_BLOCK_SIZE;i++)
+		for(int i=0;i<30;i++)
 		{
 			sprintf(test,"%d ",rxBuff[i]);
 			strcat(tempBuff,test);

@@ -37,16 +37,19 @@ void sdCardTask()
                 {
                     sdTaskState = SD_CARD_RW_STATE;
                 }
+                vTaskDelay(100);
             break;
             case SD_CARD_RW_STATE:
-                // SDCARD_PRINT("Writing");
-                // vTaskDelay(2000);
-                // sdCardWrite(0,test);
-                // vTaskDelay(2000);
-                // SDCARD_PRINT("Reading");
-                // sdCardRead(0,test1);
+                SDCARD_PRINT("Writing");
+                vTaskDelay(2000);
+                sdCardWrite(0,test);
+                vTaskDelay(2000);
+                SDCARD_PRINT("Reading");
+                sdCardRead(0,test1);
 
                 // testCard();
+                
+                sdTaskState = SD_CARD_CONNECTIVITY;
 
             break;
         } 
