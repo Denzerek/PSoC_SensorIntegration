@@ -1,5 +1,12 @@
 #include "sdCardTask.h"
 
+typedef enum{
+    SD_CARD_IDLE,
+    SD_CARD_CONNECTIVITY,
+    SD_CARD_RW_STATE
+}sdTaskState_t;
+
+sdTaskState_t sdTaskState;
 
 void sdCardTask()
 {
@@ -13,11 +20,37 @@ void sdCardTask()
 
 
     SDCARD_PRINT("Initializing ...");
-    initSDCardProcess();
-    
+    init_sd_card_driver();
+            uint32_t test[30] = {1,2,3,4,9,7,5,4,2,4,5,45,4,2,2,3,4};
+            uint32_t test1[30];
 
+    sdTaskState = SD_CARD_CONNECTIVITY;
+    
     while(1)
-    {        
-        sdCardProcess();
+    {       
+        switch(sdTaskState)
+        {
+            case SD_CARD_IDLE:
+            break;
+            case SD_CARD_CONNECTIVITY:
+                if(sdCardConnectivityProcess() == CARD_INSERTED_INITIALIZED)
+                {
+                    sdTaskState = SD_CARD_RW_STATE;
+                }
+            break;
+            case SD_CARD_RW_STATE:
+                // SDCARD_PRINT("Writing");
+                // vTaskDelay(2000);
+                // sdCardWrite(0,test);
+                // vTaskDelay(2000);
+                // SDCARD_PRINT("Reading");
+                // sdCardRead(0,test1);
+
+                // testCard();
+
+            break;
+        } 
     }
 }
+
+

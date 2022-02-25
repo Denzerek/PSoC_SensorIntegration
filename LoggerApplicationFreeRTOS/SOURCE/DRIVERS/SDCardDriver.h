@@ -36,9 +36,10 @@ typedef enum{
 	CARD_INSERT_CHECK,
 	CARD_INITIALIZE,
 	CARD_INSERTED_INITIALIZED,
-}sdCardProcess_t;
+}sdCardConnectivityProcess_t;
 
-void initSDCardProcess();
-sdCardProcess_t sdCardProcess();
+void init_sd_card_driver();
+sdCardConnectivityProcess_t sdCardConnectivityProcess();
+void testCard();
 
 #endif

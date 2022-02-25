@@ -45,12 +45,48 @@ const cy_stc_sysint_t cardDetectTimerIntr =
 };
 
 
+sdCardEvents_s sdCardEvents[]={
+		{CY_SD_HOST_ERROR,"CY_SD_HOST_ERROR"},
+		{CY_SD_HOST_ERROR_INVALID_PARAMETER,"CY_SD_HOST_ERROR_INVALID_PARAMETER"},
+		{CY_SD_HOST_ERROR_OPERATION_IN_PROGRESS,"CY_SD_HOST_ERROR_OPERATION_IN_PROGRESS"},
+		{CY_SD_HOST_ERROR_UNINITIALIZED,"CY_SD_HOST_ERROR_UNINITIALIZED"},
+		{CY_SD_HOST_ERROR_TIMEOUT,"CY_SD_HOST_ERROR_TIMEOUT"},
+		{CY_SD_HOST_OPERATION_INPROGRESS,"CY_SD_HOST_OPERATION_INPROGRESS"},
+		{CY_SD_HOST_ERROR_UNUSABLE_CARD,"CY_SD_HOST_ERROR_UNUSABLE_CARD"},
+		{CY_SD_HOST_ERROR_DISCONNECTED,"CY_SD_HOST_ERROR_DISCONNECTED"},
+		{CY_SD_HOST_CMD_COMPLETE,"CY_SD_HOST_CMD_COMPLETE"},
+		{CY_SD_HOST_XFER_COMPLETE ,"CY_SD_HOST_XFER_COMPLETE "},
+		{CY_SD_HOST_CARD_INTERRUPT,"CY_SD_HOST_CARD_INTERRUPT"},
+		{CY_SD_HOST_ERR_INTERRUPT,"CY_SD_HOST_ERR_INTERRUPT"},
+		{CY_SD_HOST_CMD_TOUT_ERR,"CY_SD_HOST_CMD_TOUT_ERR"},
+		{CY_SD_HOST_CMD_CRC_ERR ,"CY_SD_HOST_CMD_CRC_ERR "},
+		{CY_SD_HOST_CMD_END_BIT_ERR ,"CY_SD_HOST_CMD_END_BIT_ERR "},
+		{CY_SD_HOST_DATA_TOUT_ERR,"CY_SD_HOST_DATA_TOUT_ERR"},
+		{CY_SD_HOST_DATA_CRC_ERR,"CY_SD_HOST_DATA_CRC_ERR"},
+		{CY_SD_HOST_AUTO_CMD_ERR,"CY_SD_HOST_AUTO_CMD_ERR"},
+		{CY_SD_HOST_ADMA_ERR,"CY_SD_HOST_ADMA_ERR"},
+		{CY_SD_HOST_RESP_ERR,"CY_SD_HOST_RESP_ERR"},
+		{CY_SD_HOST_BOOT_ACK_ERR,"CY_SD_HOST_BOOT_ACK_ERR"}
+
+};
 
 
 
-
-
-
+void sdCardStatusDecode( cy_en_sd_host_status_t sdCardStatus)
+{
+    for(int i = 0; i < (sizeof(sdCardEvents)/sizeof(sdCardEvents_s)) ; i++)
+    {
+        if((sdCardEvents[i].sdCardEvent & sdCardStatus)  == sdCardEvents[i].sdCardEvent)
+        {
+            SDHAL_PRINT(sdCardEvents[i].sdCardMessage);
+			sdCardStatus = !((!sdCardStatus) | sdCardEvents[i].sdCardEvent);
+        }
+    }
+	if(sdCardStatus)
+	{
+		SDHAL_PRINTF("Unknown Error : %X",sdCardStatus);
+	}
+}
 
 bool Cy_SD_Host_IsCardConnected(SDHC_Type const * 	base	)
 {
@@ -66,19 +102,7 @@ void SD_Host_User_Isr(void)
     normalStatus = Cy_SD_Host_GetNormalInterruptStatus(SDHC_1_HW);
 
     /* Check the Error event */
-    switch(normalStatus)
-    {
-		case CY_SD_HOST_CARD_INSERTION:
-			SDHAL_PRINT(" SD Card Inserted");
-			break;
-		case CY_SD_HOST_CARD_REMOVAL:
-			SDHAL_PRINT(" SD Card Removed");
-			break;
-		default:
-			SDHAL_PRINT(" Unknown Interrupt %d\r\n",normalStatus);
-
-			break;
-    }
+	sdCardStatusDecode(normalStatus);
 
     if (0u < normalStatus)
     {
@@ -88,12 +112,7 @@ void SD_Host_User_Isr(void)
 
     errorStatus = Cy_SD_Host_GetErrorInterruptStatus(SDHC_1_HW);
     /* Check the Error event */
-    switch(errorStatus)
-   {
-		default:
-			SDHAL_PRINT(" Unknown Interrupt %ud\r\n",errorStatus);
-			break;
-   }
+    sdCardStatusDecode(errorStatus);
     if (0u < errorStatus)
     {
         /* Clear the Error event */
@@ -164,46 +183,6 @@ void cardDetectTimerInit(cy_israddress cardDetectTimer_ISR)
 
 
 
-void decode(cy_en_sd_host_status_t status)
-{
-
-	if((status & CY_SD_HOST_ERROR)==CY_SD_HOST_ERROR)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR ");
-	}
-	if((status & CY_SD_HOST_ERROR_INVALID_PARAMETER)==CY_SD_HOST_ERROR_INVALID_PARAMETER)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_INVALID_PARAMETER ");
-
-	}
-	if((status & CY_SD_HOST_ERROR_OPERATION_IN_PROGRESS)==CY_SD_HOST_ERROR_OPERATION_IN_PROGRESS)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_OPERATION_IN_PROGRESS ");
-
-	}
-	if((status & CY_SD_HOST_ERROR_UNINITIALIZED)==CY_SD_HOST_ERROR_UNINITIALIZED)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_UNINITIALIZED ");
-
-	}
-	if((status & CY_SD_HOST_ERROR_TIMEOUT)==CY_SD_HOST_ERROR_TIMEOUT)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_TIMEOUT ");
-	}
-	if((status & CY_SD_HOST_OPERATION_INPROGRESS)==CY_SD_HOST_OPERATION_INPROGRESS)
-	{
-		SDHAL_PRINT("CY_SD_HOST_OPERATION_INPROGRESS ");
-	}
-	if((status & CY_SD_HOST_ERROR_UNUSABLE_CARD)==CY_SD_HOST_ERROR_UNUSABLE_CARD)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_UNUSABLE_CARD ");
-	}
-	if((status & CY_SD_HOST_ERROR_DISCONNECTED)== CY_SD_HOST_ERROR_DISCONNECTED)
-	{
-		SDHAL_PRINT("CY_SD_HOST_ERROR_DISCONNECTED ");
-	}
-}
-
 
 cy_en_sd_host_status_t cardInit()
 {
@@ -214,12 +193,49 @@ cy_en_sd_host_status_t cardInit()
 	if(status != CY_SD_HOST_SUCCESS)
 	{
 		SDHAL_PRINT(" SDCard initialization Error %d",status);
-		decode(status);
+		sdCardStatusDecode(status);
 		return status;
 	}
 	return status;
 }
 
+cy_en_sd_host_status_t sdHostRead(cy_stc_sd_host_write_read_config_t* data)
+{
+	
+	cy_en_sd_host_status_t ret;
+		ret = Cy_SD_Host_Read(SDHC_1_HW, data, &sdHostContext);   /* Read data from the card. */
+	if (CY_SD_HOST_SUCCESS == ret)
+	{
+		while (CY_SD_HOST_XFER_COMPLETE != (Cy_SD_Host_GetNormalInterruptStatus(SDHC_1_HW) & CY_SD_HOST_XFER_COMPLETE))
+		{
+			/* Wait for the data-transaction complete event. */
+		}
+	}
+	else
+	{
+		SDHAL_PRINT("Read init FAIL.");
+	}
+}
+
+
+
+cy_en_sd_host_status_t sdHostWrite(cy_stc_sd_host_write_read_config_t* data)
+{
+	
+	cy_en_sd_host_status_t ret;
+	ret = Cy_SD_Host_Write(SDHC_1_HW, data, &sdHostContext);
+	if (CY_SD_HOST_SUCCESS == ret)
+	{
+		while (CY_SD_HOST_XFER_COMPLETE != (Cy_SD_Host_GetNormalInterruptStatus(SDHC_1_HW) & CY_SD_HOST_XFER_COMPLETE))
+		{
+			/* Wait for the data-transaction complete event. */
+		}
+	}
+	else
+	{
+		SDHAL_PRINT("Write init FAIL.");
+	}
+}
 
 
 void SD_printSDHC_1_cardCapacity()
