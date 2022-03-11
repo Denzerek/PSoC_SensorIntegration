@@ -19,12 +19,13 @@ reception_s	receivedData;
 #ifdef SERIAL_DEBUG_WITH_DMA
 
 
-ringQueue_s ringQueueHandle_A;
-ringQueue_s ringQueueHandle_B;
-ringQueue_s* ringQueueHandle_Current;
+static ringQueue_s ringQueueHandle_A;
+static ringQueue_s ringQueueHandle_B;
+static ringQueue_s* ringQueueHandle_Current = NULL;
+static ringQueue_s* ringQueueHandle_Previous = NULL;
 
 #else
-ringQueue_s ringQueueHandle;
+static ringQueue_s ringQueueHandle;
 #endif
 
 uint8_t temp[200];
@@ -33,21 +34,25 @@ uint8_t temp[200];
 
 #ifdef SERIAL_DEBUG_WITH_DMA
 
-void switchCurrentSerialQueue(serialDebugPingPong_t queueToSwitchTo)
+void serialPreviousQueueReset()
 {
-	switch(queueToSwitchTo)
+	ringQueueReset(ringQueueHandle_Previous);
+}
+
+void switchCurrentSerialQueue()
+{
+	ringQueueHandle_Previous = ringQueueHandle_Current;
+	if(ringQueueHandle_Current == &ringQueueHandle_A)
 	{
-	case queue_A:
-		ringQueueHandle_Current = &ringQueueHandle_A;
-	break;
-	case queue_B:
 		ringQueueHandle_Current = &ringQueueHandle_B;
-	break;
-	default:
-		break;
+	}
+	else{
+		ringQueueHandle_Current = &ringQueueHandle_A;
 	}
 }
 #endif
+
+
 
 uint32_t getCurrentSerialQueueSize()
 {
@@ -58,7 +63,9 @@ uint32_t getCurrentSerialQueueSize()
 #endif
 }
 
-uint32_t* getSerialQueueSourceAddress(serialDebugPingPong_t queue)
+
+
+uint32_t* getSerialQueueSourceAddress()
 {
 #ifdef SERIAL_DEBUG_WITH_DMA
 	return &(ringQueueHandle_Current->ringBuffer[0][0]);
@@ -156,11 +163,24 @@ uint8_t SerialDebug_TASK()
 }
 
 
+
 void serialDebugTransmit(char* transmitData)
 {
 #ifdef SERIAL_DEBUG_WITH_DMA
 
-
+	if(ringQueueHandle_Current == NULL)
+	{
+		switchCurrentSerialQueue();
+	}
+	if(transmitData != NULL)
+	{
+		ringQueueStore(ringQueueHandle_Current,transmitData);
+	}
+	if(getCurrentSerialQueueSize() > 10)// RING_ROW_MAX)
+	{
+		switchCurrentSerialQueue();
+		dmaStartTransfer();
+	}
 
 #else
 	if(bUartTxCmpltFlag == false)

@@ -17,7 +17,9 @@ typedef enum
 }serialDebugPingPong_t;
 
 
-void dmaInit();
+void dmaInit(cy_israddress *dmaTxInterruptHandler);
+void dmaStartTransfer();
+void setDMASource(uint32_t* source);
 
 
 #endif /* SOURCE_APPLICATION_DMA_H_ */

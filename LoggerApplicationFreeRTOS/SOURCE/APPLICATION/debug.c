@@ -36,6 +36,13 @@ void debug_ReceptionData_Handler(uint8_t* receptionData)
 	DEBUG_PRINTF("Processing Command : %s",receptionData);
 }
 
+char myBuffer[50];
+void uartDmaSend(char* data)
+{
+
+    sprintf(myBuffer,"\r%s",data);
+    dmaStartTransfer();
+}
 
 
 void debugTask()
@@ -43,11 +50,10 @@ void debugTask()
 	TickType_t xTicksToWait = 100 / portTICK_PERIOD_MS;
 	serialDebugInit();
 #ifdef SERIAL_DEBUG_WITH_DMA
-	dmaInit();
-	setDMASource(getSerialQueueSourceAddress(queue_A));
+	dmaDriver_init();
 #endif
 
-	serialDebugTransmit("\x1b[2J\x1b[;H");
+	DEBUG_PRINT("\x1b[2J\x1b[;H");
 	DEBUG_PRINT("Serial Debug initialized");
 	DEBUG_PRINTF("BUILD DATE : %s",__DATE__);
 	DEBUG_PRINTF("BUILD TIME : %s",__TIME__);

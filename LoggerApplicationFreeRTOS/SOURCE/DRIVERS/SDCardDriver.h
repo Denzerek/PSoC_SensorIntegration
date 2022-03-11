@@ -41,5 +41,7 @@ typedef enum{
 void init_sd_card_driver();
 sdCardConnectivityProcess_t sdCardConnectivityProcess();
 void testCard();
+void sdCardRead(uint32_t readStartAddress,uint32_t* dataToRead);
+void sdCardWrite(uint32_t writeStartAddress,uint32_t* dataToWrite);
 
 #endif

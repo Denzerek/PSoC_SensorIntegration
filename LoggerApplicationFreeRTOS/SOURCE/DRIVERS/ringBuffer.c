@@ -25,6 +25,18 @@ void ringQueueInit(ringQueue_s *ringQueue)
 }
 
 
+void ringQueueReset(ringQueue_s *ringQueue)
+{
+	if(ringQueue == NULL) return;
+	FACE_Q = 0;
+	TAIL_Q = 0;
+	OVERFLOW_Q = false;
+	EMPTYFLAG_Q = true;
+
+	volatile uint32_t size = sizeof(BUFFER_Q);
+	memset(BUFFER_Q,0,sizeof(BUFFER_Q));
+}
+
 uint32_t getRingQueueCurrentSize(ringQueue_s *ringQueue)
 {
 	if(FACE_Q > TAIL_Q)

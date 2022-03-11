@@ -26,12 +26,14 @@ typedef struct{
 
 
 
-uint32_t* getSerialQueueSourceAddress(serialDebugPingPong_t queue);
+uint32_t* getSerialQueueSourceAddress();
 void serialDebugInit(void);
 void serialDebugTransmit(char* transmitData);
 uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer);
 uint8_t SerialDebug_TASK();
 uint32_t getCurrentSerialQueueSize();
+void switchCurrentSerialQueue();
+void serialPreviousQueueReset();
 
 
 #endif /* SOURCE_DRIVER_SERIALDRIVER_H_ */

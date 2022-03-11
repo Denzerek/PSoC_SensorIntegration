@@ -80,11 +80,11 @@ int main(void)
 
 
     xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
-
+#if 1
     xTaskCreate(sdCardTask,"SD CARD TASK",8*1024,0,5,0);
     
     xTaskCreate(RTCTask,"RTC TASK",8*1024,0,5,0);
-
+#endif
     vTaskStartScheduler();
 
     for(;;){}

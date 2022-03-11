@@ -10,7 +10,11 @@
 
 #include "common.h"
 
+#ifdef SERIAL_DEBUG_WITH_DMA
 #define RING_MAX		90
+#else
+#define RING_MAX		90
+#endif
 #define RING_ROW_MAX	40
 #define RING_COL_MAX	RING_MAX
 
@@ -61,6 +65,7 @@ uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray);
 ringQueueStatus_t ringQueueStore(ringQueue_s *ringQueue, char* dataToStore);
 void ringQueueInit(ringQueue_s *ringQueue);
 uint32_t getRingQueueCurrentSize(ringQueue_s *ringQueue);
+void ringQueueReset(ringQueue_s *ringQueue);
 
 
 
