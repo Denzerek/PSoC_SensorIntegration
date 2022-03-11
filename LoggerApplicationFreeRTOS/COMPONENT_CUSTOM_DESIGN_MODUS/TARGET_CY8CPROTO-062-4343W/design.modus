@@ -10,6 +10,36 @@
                         <Param id="traceEnable" value="false"/>
                     </Personality>
                 </Block>
+                <Block location="cpuss[0].dw0[0].chan[26]">
+                    <Alias value="UDMA"/>
+                    <Personality template="mxs40dma" version="1.0">
+                        <Param id="CRC_DATA_REVERSE" value="false"/>
+                        <Param id="CRC_DATA_XOR" value="0"/>
+                        <Param id="CRC_REMINDER_REVERSE" value="false"/>
+                        <Param id="CRC_REMINDER_XOR" value="0"/>
+                        <Param id="CRC_POLYNOMIAL" value="79764919"/>
+                        <Param id="CHANNEL_PRIORITY" value="3"/>
+                        <Param id="NUM_OF_DESCRIPTORS" value="1"/>
+                        <Param id="PREEMPTABLE" value="false"/>
+                        <Param id="BUFFERABLE" value="false"/>
+                        <Param id="DESCR_SELECTION" value="0"/>
+                        <Param id="TRIG_OUT_TYPE_0" value="CY_DMA_1ELEMENT"/>
+                        <Param id="INTR_OUT_0" value="CY_DMA_DESCR"/>
+                        <Param id="ENABLE_CHAINING_0" value="false"/>
+                        <Param id="CHAN_STATE_COMPL_0" value="CY_DMA_CHANNEL_ENABLED"/>
+                        <Param id="TRIG_IN_TYPE_0" value="CY_DMA_1ELEMENT"/>
+                        <Param id="TRIG_DEACT_0" value="CY_DMA_RETRIG_4CYC"/>
+                        <Param id="DATA_TRANSFER_WIDTH_0" value="ByteToWord"/>
+                        <Param id="X_NUM_OF_ELEMENTS_0" value="20"/>
+                        <Param id="X_SRC_INCREMENT_0" value="1"/>
+                        <Param id="X_DST_INCREMENT_0" value="0"/>
+                        <Param id="CRC_0" value="false"/>
+                        <Param id="Y_NUM_OF_ELEMENTS_0" value="45"/>
+                        <Param id="Y_SRC_INCREMENT_0" value="1"/>
+                        <Param id="Y_DST_INCREMENT_0" value="0"/>
+                        <Param id="inFlash" value="true"/>
+                    </Personality>
+                </Block>
                 <Block location="csd[0].csd[0]">
                     <Alias value="CYBSP_CSD"/>
                     <Personality template="mxs40csd" version="2.0">
@@ -858,6 +888,10 @@
                 <Net>
                     <Port name="cpuss[0].dap[0].swj_swo_tdo[0]"/>
                     <Port name="ioss[0].port[6].pin[4].digital_out[0]"/>
+                </Net>
+                <Net>
+                    <Port name="cpuss[0].dw0[0].chan[26].tr_in[0]"/>
+                    <Port name="scb[5].tr_tx_req[0]"/>
                 </Net>
                 <Net>
                     <Port name="csd[0].csd[0].clock[0]"/>

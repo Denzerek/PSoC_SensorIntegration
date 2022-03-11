@@ -88,9 +88,7 @@ uint8_t SerialDebug_TASK()
 	uint8_t allTransmissionComplete = false;
 	if(bUartTxCmpltFlag == true && ringQueueHandle.ringQueueEmptyFlag == false)
 	{
-		char tempBuffer[RING_MAX];
-		QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer);
-		serialDebugTransmit(tempBuffer);
+		serialDebugTransmit(NULL);
 	}
 	else
 	if (ringQueueHandle.ringQueueEmptyFlag == true)
@@ -137,9 +135,15 @@ void serialDebugTransmit(char* transmitData)
 		return;
 	}
 
-	/* Start transmit operation (do not check status) */
-	UART_Transmit(transmitData);
+	char tempBuffer[90];
+	if(transmitData != NULL)
+		ringQueueStore(&ringQueueHandle,transmitData);
+	if(QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer))
+	{
+		/* Start transmit operation (do not check status) */
+		UART_Transmit(tempBuffer);
 
-	/*set the falg to false after transmission*/
-	bUartTxCmpltFlag = false;
+		/*set the falg to false after transmission*/
+		bUartTxCmpltFlag = false;
+	}
 }

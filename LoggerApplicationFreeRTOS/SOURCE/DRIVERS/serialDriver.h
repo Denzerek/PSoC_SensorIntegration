@@ -25,6 +25,7 @@ typedef struct{
 
 
 
+uint32_t* getRingSourceAddress();
 void serialDebugInit(void);
 void serialDebugTransmit(char* transmitData);
 uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer);

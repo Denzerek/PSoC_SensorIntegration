@@ -24,6 +24,34 @@ void ringQueueInit(ringQueue_s *ringQueue)
 	EMPTYFLAG_Q = true;
 }
 
+
+uint32_t getRingQueueCurrentSize(ringQueue_s *ringQueue)
+{
+	if(FACE_Q > TAIL_Q)
+	{
+		if(OVERFLOW_Q)
+		{
+			return (RING_ROW_MAX - (FACE_Q - TAIL_Q));
+		}
+		else
+		{
+			return (FACE_Q - TAIL_Q);
+		}
+	}
+	else
+	{
+		if(OVERFLOW_Q)
+		{
+			return (RING_ROW_MAX - (TAIL_Q - FACE_Q));
+		}
+		else
+		{
+			return (FACE_Q - TAIL_Q);
+		}
+
+	}
+}
+
 ringQueueStatus_t ringQueueStore(ringQueue_s *ringQueue, char* dataToStore)
 {
 
@@ -91,6 +119,7 @@ uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray)
 		else if(TAIL_Q < FACE_Q)
 		OVERFLOW_Q = false;
 	}
+	return 1;
 }
 
 /*

@@ -60,6 +60,7 @@ void ringBufferInit(ringStruct_s *ring);
 uint8_t QueueRetrieve_ByteArray(ringQueue_s *ringQueue, uint8_t* byteArray);
 ringQueueStatus_t ringQueueStore(ringQueue_s *ringQueue, char* dataToStore);
 void ringQueueInit(ringQueue_s *ringQueue);
+uint32_t getRingQueueCurrentSize(ringQueue_s *ringQueue);
 
 
 

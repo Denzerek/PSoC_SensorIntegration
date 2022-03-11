@@ -10,6 +10,7 @@
 
 #include "debug.h"
 #include "serialDriver.h"
+#include "dma.h"
 
 
 
@@ -41,6 +42,8 @@ void debugTask()
 {
 	TickType_t xTicksToWait = 100 / portTICK_PERIOD_MS;
 	serialDebugInit();
+	//dmaInit();
+	//setDMASource(getRingSourceAddress());
 
 	serialDebugTransmit("\x1b[2J\x1b[;H");
 	DEBUG_PRINT("Serial Debug initialized");
@@ -50,7 +53,9 @@ void debugTask()
 	DEBUG_PRINT("**********  Logger Application ************");
 	DEBUG_PRINT("*******************************************");
 
-	while(!SerialDebug_TASK()){}
+
+	DEBUG_PRINTF("Current Ring size %d",getRingQueueCurrentSize());
+
 
 	// vTaskDelay(2000);
 	xEventGroupSetBits(
