@@ -32,15 +32,17 @@ uint8_t temp[200];
 
 
 
-#ifdef SERIAL_DEBUG_WITH_DMA
 
 void serialPreviousQueueReset()
 {
+#ifdef SERIAL_DEBUG_WITH_DMA
 	ringQueueReset(ringQueueHandle_Previous);
+#endif
 }
 
 void switchCurrentSerialQueue()
 {
+#ifdef SERIAL_DEBUG_WITH_DMA
 	ringQueueHandle_Previous = ringQueueHandle_Current;
 	if(ringQueueHandle_Current == &ringQueueHandle_A)
 	{
@@ -49,8 +51,8 @@ void switchCurrentSerialQueue()
 	else{
 		ringQueueHandle_Current = &ringQueueHandle_A;
 	}
-}
 #endif
+}
 
 
 
