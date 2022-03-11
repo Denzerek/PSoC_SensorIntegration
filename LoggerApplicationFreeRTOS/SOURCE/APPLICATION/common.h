@@ -29,6 +29,7 @@
 #define false 0
 #define true 1
 
+//#define SERIAL_DEBUG_WITH_DMA
 
 #define DEBUG_TASK_EVENT_BIT        ( 1 << 0 )
 

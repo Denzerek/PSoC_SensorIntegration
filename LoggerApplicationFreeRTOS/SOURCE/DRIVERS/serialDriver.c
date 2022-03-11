@@ -15,8 +15,57 @@
 static volatile bool bUartTxCmpltFlag = true;
 ringStruct_s serialRing;
 reception_s	receivedData;
+
+#ifdef SERIAL_DEBUG_WITH_DMA
+
+
+ringQueue_s ringQueueHandle_A;
+ringQueue_s ringQueueHandle_B;
+ringQueue_s* ringQueueHandle_Current;
+
+#else
 ringQueue_s ringQueueHandle;
+#endif
+
 uint8_t temp[200];
+
+
+
+#ifdef SERIAL_DEBUG_WITH_DMA
+
+void switchCurrentSerialQueue(serialDebugPingPong_t queueToSwitchTo)
+{
+	switch(queueToSwitchTo)
+	{
+	case queue_A:
+		ringQueueHandle_Current = &ringQueueHandle_A;
+	break;
+	case queue_B:
+		ringQueueHandle_Current = &ringQueueHandle_B;
+	break;
+	default:
+		break;
+	}
+}
+#endif
+
+uint32_t getCurrentSerialQueueSize()
+{
+#ifdef SERIAL_DEBUG_WITH_DMA
+	return getRingQueueCurrentSize(ringQueueHandle_Current);
+#else
+	return getRingQueueCurrentSize(&ringQueueHandle);
+#endif
+}
+
+uint32_t* getSerialQueueSourceAddress(serialDebugPingPong_t queue)
+{
+#ifdef SERIAL_DEBUG_WITH_DMA
+	return &(ringQueueHandle_Current->ringBuffer[0][0]);
+#else
+	return &(ringQueueHandle.ringBuffer[0][0]);
+#endif
+}
 
 void ReceptionCallback(uint32_t event)
 {
@@ -44,7 +93,12 @@ void serialDebugInit()
 
 	ringBufferInit(&serialRing);
 
+#ifdef SERIAL_DEBUG_WITH_DMA
+	ringQueueInit(&ringQueueHandle_A);
+	ringQueueInit(&ringQueueHandle_B);
+#else
 	ringQueueInit(&ringQueueHandle);
+#endif
 
 }
 
@@ -83,9 +137,11 @@ uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer)
 
 }
 
+
 uint8_t SerialDebug_TASK()
 {
 	uint8_t allTransmissionComplete = false;
+#ifndef SERIAL_DEBUG_WITH_DMA
 	if(bUartTxCmpltFlag == true && ringQueueHandle.ringQueueEmptyFlag == false)
 	{
 		serialDebugTransmit(NULL);
@@ -96,11 +152,17 @@ uint8_t SerialDebug_TASK()
 		allTransmissionComplete = true;
 	}
 	return allTransmissionComplete;
+#endif
 }
 
 
 void serialDebugTransmit(char* transmitData)
 {
+#ifdef SERIAL_DEBUG_WITH_DMA
+
+
+
+#else
 	if(bUartTxCmpltFlag == false)
 	{
 
@@ -122,7 +184,7 @@ void serialDebugTransmit(char* transmitData)
 			{
 				if(bUartTxCmpltFlag == true)
 				{
-					char tempBuffer[50];
+					char tempBuffer[RING_MAX];
 					QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer);
 					/* Start transmit operation (do not check status) */
 					UART_Transmit(tempBuffer);
@@ -135,9 +197,11 @@ void serialDebugTransmit(char* transmitData)
 		return;
 	}
 
-	char tempBuffer[90];
+	char tempBuffer[RING_MAX];
 	if(transmitData != NULL)
+	{
 		ringQueueStore(&ringQueueHandle,transmitData);
+	}
 	if(QueueRetrieve_ByteArray(&ringQueueHandle,tempBuffer))
 	{
 		/* Start transmit operation (do not check status) */
@@ -146,4 +210,5 @@ void serialDebugTransmit(char* transmitData)
 		/*set the falg to false after transmission*/
 		bUartTxCmpltFlag = false;
 	}
+#endif
 }

@@ -184,7 +184,7 @@ i2cDriverState_t i2c_writeByte(uint8_t address,uint8_t registerAddress,uint8_t w
 
 i2cDriverState_t i2c_readByte(uint8_t address,uint8_t registerAddress,uint8_t* readData)
 {
-    if(hardwareErrorFlag){*readData = 0x00;return;}
+    if(hardwareErrorFlag){*readData = 0x00;return I2C_DRIVER_RW_FAILED;}
     cy_stc_scb_i2c_master_xfer_config_t transfer;
     uint8_t readByte = 0;
     uint8_t writeBuffer[1UL] = {registerAddress};

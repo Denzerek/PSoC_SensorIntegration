@@ -42,8 +42,10 @@ void debugTask()
 {
 	TickType_t xTicksToWait = 100 / portTICK_PERIOD_MS;
 	serialDebugInit();
-	//dmaInit();
-	//setDMASource(getRingSourceAddress());
+#ifdef SERIAL_DEBUG_WITH_DMA
+	dmaInit();
+	setDMASource(getSerialQueueSourceAddress(queue_A));
+#endif
 
 	serialDebugTransmit("\x1b[2J\x1b[;H");
 	DEBUG_PRINT("Serial Debug initialized");
@@ -54,7 +56,7 @@ void debugTask()
 	DEBUG_PRINT("*******************************************");
 
 
-	DEBUG_PRINTF("Current Ring size %d",getRingQueueCurrentSize());
+	DEBUG_PRINTF("Current Ring size %d",getCurrentSerialQueueSize());
 
 
 	// vTaskDelay(2000);

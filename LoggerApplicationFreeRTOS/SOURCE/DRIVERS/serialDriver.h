@@ -10,6 +10,7 @@
 
 
 #include "common.h"
+#include "dma.h"
 
 
 #define RECEPTION_BUFFER_MAX	50
@@ -25,10 +26,12 @@ typedef struct{
 
 
 
-uint32_t* getRingSourceAddress();
+uint32_t* getSerialQueueSourceAddress(serialDebugPingPong_t queue);
 void serialDebugInit(void);
 void serialDebugTransmit(char* transmitData);
 uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer);
 uint8_t SerialDebug_TASK();
+uint32_t getCurrentSerialQueueSize();
+
 
 #endif /* SOURCE_DRIVER_SERIALDRIVER_H_ */

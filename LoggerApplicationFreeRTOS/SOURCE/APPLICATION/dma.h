@@ -10,6 +10,11 @@
 
 #include "common.h"
 
+typedef enum
+{
+	queue_A,
+	queue_B
+}serialDebugPingPong_t;
 
 
 void dmaInit();
