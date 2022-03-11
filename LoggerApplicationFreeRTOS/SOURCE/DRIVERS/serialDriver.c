@@ -123,7 +123,7 @@ uint8_t serialDebug_RetrieveReceptionData(uint8_t* retrievalBuffer)
 			if(receivedData.previousByte[index] != '\r' || receivedData.previousByte[index] != '\n')
 			{
 				sprintf(temp,"%c",receivedData.previousByte[index]);
-				serialPrint(temp);
+				//serialPrint(temp);
 			}
 			receivedData.receptionData[receivedData.index++] = receivedData.previousByte[index];
 			if(receivedData.previousByte[index] == '\r' || receivedData.previousByte[index] == '\n' || receivedData.index >= (RECEPTION_BUFFER_MAX - 2))

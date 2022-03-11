@@ -34,6 +34,8 @@ taskMsgStruct_s taskMsgCollection[] = {
 void debug_ReceptionData_Handler(uint8_t* receptionData)
 {
 	DEBUG_PRINTF("Processing Command : %s",receptionData);
+		switchCurrentSerialQueue();
+		dmaStartTransfer();
 }
 
 char myBuffer[50];

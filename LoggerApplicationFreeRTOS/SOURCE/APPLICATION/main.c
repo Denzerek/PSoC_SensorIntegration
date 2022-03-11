@@ -46,11 +46,11 @@
 #include "debug.h"
 #include "sdCardTask.h"
 #include "RTCTask.h"
+#include "softwareTimers.h"
 
 
 
 EventGroupHandle_t xCreatedEventGroup;
-
 int main(void)
 {
 
@@ -65,6 +65,7 @@ int main(void)
 
   /* Attempt to create the event group. */
     xCreatedEventGroup = xEventGroupCreate();
+    
 
     /* Was the event group created successfully? */
     if( xCreatedEventGroup == NULL )
@@ -77,6 +78,9 @@ int main(void)
         /* The event group was created. */
         xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
     }
+    
+    softwareTimers_Init();
+
 
 
     xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
