@@ -11,7 +11,7 @@
 #include "debug.h"
 #include "serialDriver.h"
 #include "dma.h"
-
+#include "RTC_driver.h"
 extern char RTCGlobalTime[20];
 
 
@@ -33,18 +33,24 @@ taskMsgStruct_s taskMsgCollection[] = {
 
 void debug_ReceptionData_Handler(uint8_t* receptionData)
 {
-	DEBUG_PRINT("Processing Command : %s",receptionData);
-		switchCurrentSerialQueue();
-		dmaStartTransfer();
+	int i;
+	for(i = 0;receptionData[i] != '\0'&& receptionData[i] != '\r' &&receptionData[i] != '\n';i++){}
+	receptionData[i] = '\0';
+
+	DEBUG_PRINT("Command : %s",receptionData);
+	if(!strcmp(receptionData,"rtc_reset"))
+	{
+		DEBUG_PRINT("Processing...");
+		if(rtc_Reset())
+			DEBUG_PRINT("FAILED");
+		else
+			DEBUG_PRINT("DONE");
+
+	}
+	switchCurrentSerialQueue();
+	dmaStartTransfer();
 }
 
-char myBuffer[50];
-void uartDmaSend(char* data)
-{
-
-    sprintf(myBuffer,"\r%s",data);
-    dmaStartTransfer();
-}
 
 
 void debugTask()

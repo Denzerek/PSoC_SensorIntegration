@@ -109,11 +109,10 @@ void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_
     rtc_setCustom(customTime);
 }
 
-void rtc_Reset()
+
+
+uint8_t rtc_Reset()
 {
-    static int onceflag;
-    if(onceflag) return;
-    onceflag ++;
     RTCTimeRegisterStruct_s time = {
     .seconds= 0,
     .tenthSecond= 0,
@@ -121,7 +120,6 @@ void rtc_Reset()
     .tenthMinutes= 0,
     .hour= 0,
     .tenthHour= 0,
-    .hour_20_am_pm= 0,
     .day=0,
     .date= 0,
     .tenthDate= 0,
@@ -129,8 +127,7 @@ void rtc_Reset()
     .tenthMonth= 0,
     .century= 0,
     };
-    writeBuffer[0] = RTC_SECONDS_REGISTER;
-    i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,&time,sizeof(time));
+    return i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,(uint8_t*)&time,sizeof(time));
 }
 
 

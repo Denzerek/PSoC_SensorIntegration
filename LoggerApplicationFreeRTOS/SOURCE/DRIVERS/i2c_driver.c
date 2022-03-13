@@ -150,7 +150,7 @@ i2cDriverState_t i2c_writeBurst(uint8_t address,uint8_t registerAddress,uint8_t*
     /* Wait for transaction completion */
     while (0UL != (CY_SCB_I2C_MASTER_BUSY & i2c_scb3_master_get_status()))
     {
-        vTaskDelay(10);if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
+        if(checkI2CHardwareErrorStatus()) return I2C_DRIVER_RW_FAILED;
     }
     free(writeBuffer);
     return I2C_DRIVER_RW_SUCCESS;

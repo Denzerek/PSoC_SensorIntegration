@@ -47,7 +47,7 @@ sdCardConnectivityProcess_t sdCardConnectivityProcess()
             sdCardConnectivityProcessState = CARD_IDLE;
 			break;
         case CARD_IDLE:
-            vTaskDelay(1);
+            taskYIELD();
         break;
 		case CARD_DETECT_ACTIVITY:
 			SDDRIVER_PRINT(" CARD_DETECT_ACTIVITY");
@@ -85,7 +85,7 @@ sdCardConnectivityProcess_t sdCardConnectivityProcess()
 			}
 			break;
 		case CARD_INSERTED_INITIALIZED:
-            vTaskDelay(1);
+            taskYIELD();
 			break;
 	}
 	return sdCardConnectivityProcessState;

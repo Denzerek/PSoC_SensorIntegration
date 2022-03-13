@@ -104,7 +104,7 @@ uint8_t rtc_getSeconds();
 uint8_t rtc_displayAllTime();
 void rtc_setCustom(RTCTimeRegisterStruct_s customTime);
 void rtc_getAllRegister(RTCTimeRegisterStruct_s *customTime);
-void rtc_Reset();
+uint8_t rtc_Reset();
 uint8_t rtc_getHours();
 void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_t min,uint8_t sec);
 uint8_t rtc_get_mmddyyhhmmss_asString(char * RTCTime);
