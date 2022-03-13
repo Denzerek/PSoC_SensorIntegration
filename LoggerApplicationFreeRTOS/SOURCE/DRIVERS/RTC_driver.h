@@ -35,7 +35,7 @@ typedef struct{
     uint8_t tenthMinutes:4;
     uint8_t hour:4;
     uint8_t tenthHour:1;
-    uint8_t am_pm_20:1;
+    uint8_t hour_20_am_pm:1;
     uint8_t hour_12_24:2;
     uint8_t day:3;
     uint8_t :5;
@@ -67,7 +67,7 @@ typedef struct{
 
 typedef struct{
     uint8_t seconds:4;
-    uint8_t tenthSeconds:4
+    uint8_t tenthSeconds:4;
 }RTCSeconds_s;
 
 typedef struct{
@@ -88,7 +88,7 @@ typedef struct{
     uint8_t hour:4;
     uint8_t tenthHour:1;
     uint8_t hour_20_am_pm:1;
-    uint8_t hour_12_24_format:1;
+    uint8_t hour_12_24:1;
     uint8_t :1;
 }RTCHour_s;
 
@@ -107,5 +107,6 @@ void rtc_getAllRegister(RTCTimeRegisterStruct_s *customTime);
 void rtc_Reset();
 uint8_t rtc_getHours();
 void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_t min,uint8_t sec);
+uint8_t rtc_get_mmddyyhhmmss_asString(char * RTCTime);
 
 #endif

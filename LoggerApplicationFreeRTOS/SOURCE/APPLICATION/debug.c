@@ -12,7 +12,7 @@
 #include "serialDriver.h"
 #include "dma.h"
 
-
+extern char RTCGlobalTime[20];
 
 
 uint8_t retrievalBuffer[200];
@@ -125,8 +125,11 @@ void debugTransmit(dbgHeader_t dbgHeader, ...)
 		{
 			vsprintf(myData, va_arg(argptr,char *), argptr);
 			va_end(argptr);
-
-			sprintf(myData1,"%s%s\r\n",taskMsgCollection[i].stringHeader,myData);
+#ifdef DEBUG_DISPLAY_DATE_TIME
+			sprintf(myData1,"%s %s%s\r\n",RTCGlobalTime,taskMsgCollection[i].stringHeader,myData);
+#else
+			sprintf(myData1,"%s%s\r\n",RTCGlobalTime,taskMsgCollection[i].stringHeader,myData);
+#endif
 			serialDebugTransmit(myData1);
 			return;
 

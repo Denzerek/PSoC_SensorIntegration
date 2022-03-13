@@ -49,6 +49,7 @@
 #include "softwareTimers.h"
 
 
+void FreeRTOS_ComponentsInit();
 
 EventGroupHandle_t xCreatedEventGroup;
 int main(void)
@@ -63,23 +64,7 @@ int main(void)
 
     __enable_irq();
 
-  /* Attempt to create the event group. */
-    xCreatedEventGroup = xEventGroupCreate();
-    
-
-    /* Was the event group created successfully? */
-    if( xCreatedEventGroup == NULL )
-    {
-        /* The event group was not created because there was insufficient
-        FreeRTOS heap available. */
-    }
-    else
-    {
-        /* The event group was created. */
-        xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
-    }
-    
-    softwareTimers_Init();
+    FreeRTOS_ComponentsInit();
 
 
 
@@ -92,6 +77,30 @@ int main(void)
     vTaskStartScheduler();
 
     for(;;){}
+}
+
+
+
+void FreeRTOS_ComponentsInit()
+{
+
+	  /* Attempt to create the event group. */
+	    xCreatedEventGroup = xEventGroupCreate();
+
+
+	    /* Was the event group created successfully? */
+	    if( xCreatedEventGroup == NULL )
+	    {
+	        /* The event group was not created because there was insufficient
+	        FreeRTOS heap available. */
+	    }
+	    else
+	    {
+	        /* The event group was created. */
+	        xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
+	    }
+
+	    softwareTimers_Init();
 }
 
 /* [] END OF FILE */

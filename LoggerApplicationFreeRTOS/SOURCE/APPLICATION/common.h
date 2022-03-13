@@ -29,16 +29,20 @@
 #define false 0
 #define true 1
 
+// Use DMA for debuging via UART
 #define SERIAL_DEBUG_WITH_DMA
+
+// Display the date and time along with debug data
+#define DEBUG_DISPLAY_DATE_TIME
 
 
 //Application Debug
-#define RTC_DRIVER_DEBUG_ENABLE
-#define RTC_TASK_DEBUG_ENABLE
+//#define RTC_TASK_DEBUG_ENABLE
 #define SDCARD_DEBUG_ENABLE
 
 // Drivers Debug
 #define I2C_DRIVER_DEBUG_ENABLE
+#define RTC_DRIVER_DEBUG_ENABLE
 #define SDCARD_DRIVER_DEBUG_ENABLE
 
 // HAL Debug

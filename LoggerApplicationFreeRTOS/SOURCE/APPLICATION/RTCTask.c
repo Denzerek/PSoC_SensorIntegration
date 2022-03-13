@@ -8,7 +8,7 @@
                                     rtcProcess = RTC_ERROR_CHECK;\
                                 }
                                 
-
+#define RTC_RTCGlobalTime_NA		"RTC NA"
 typedef enum
 {
 	RTC_IDLE,
@@ -22,10 +22,11 @@ typedef enum
 
 
 static rtcProcess_t rtcProcess = RTC_IDLE;
+char RTCGlobalTime[20];
 
 void RTCTask()
 {
-    
+
 	xEventGroupWaitBits(
             xCreatedEventGroup,   /* The event group being tested. */
             DEBUG_TASK_EVENT_BIT, /* The bits within the event group to wait for. */
@@ -35,15 +36,12 @@ void RTCTask()
 
 
     RTCTASK_PRINT("Initializing ...");
+	sprintf( RTCGlobalTime,RTC_RTCGlobalTime_NA);
 
     rtcProcess = RTC_INIT;
     rtcProcess_t rtcProcessPrevState;
     while(1)
     {
-        // vTaskDelay(1000);
-        // RTCTASK_PRINT("%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
-        // rtc_displayAllTime();
-        // vTaskDelay(1000);
 
         switch(rtcProcess)
         {
@@ -57,6 +55,8 @@ void RTCTask()
         	break;
         case RTC_COMM_ERROR:
     	    RTCTASK_PRINT("RTC_COMM_ERROR:Please check hardware connections");
+
+    		sprintf( RTCGlobalTime,RTC_RTCGlobalTime_NA);
             checkI2CHardwareErrorStatus();
     		rtcProcess = RTC_IDLE;
         	break;
@@ -65,6 +65,7 @@ void RTCTask()
         	if(i2c_driver_init() != CY_SCB_I2C_SUCCESS)
         	{
         		rtcProcess = RTC_INIT_FAILURE;
+        		sprintf( RTCGlobalTime,RTC_RTCGlobalTime_NA);
                 break;
         	}
             rtcProcess = RTC_INIT_SUCCESS;
@@ -79,8 +80,10 @@ void RTCTask()
         	break;
         case RTC_READ:
 
-            rtc_displayAllTime();
+        	rtc_get_mmddyyhhmmss_asString(RTCGlobalTime);
+        	RTCTASK_PRINT(RTCGlobalTime);
             checkForHardwareError();
+
             vTaskDelay(1000);
         	break;
         case RTC_ERROR_CHECK:

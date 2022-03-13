@@ -19,7 +19,7 @@ typedef enum
 
 typedef enum{
     I2C_DRIVER_RW_SUCCESS,
-    I2C_DRIVER_RW_FAILED
+    I2C_DRIVER_RW_FAILED = 0xFF,
 }i2cDriverState_t;
 
 
