@@ -31,6 +31,17 @@ taskMsgStruct_s taskMsgCollection[] = {
 
 
 
+
+typedef struct{
+	char command[20];
+	uint8_t (*commandHandler)();
+}commandStruct_s;
+
+commandStruct_s commandHolder[]={
+		{"rtc_reset",rtc_Reset}
+};
+
+
 void debug_ReceptionData_Handler(uint8_t* receptionData)
 {
 	int i;
@@ -38,15 +49,19 @@ void debug_ReceptionData_Handler(uint8_t* receptionData)
 	receptionData[i] = '\0';
 
 	DEBUG_PRINT("Command : %s",receptionData);
-	if(!strcmp(receptionData,"rtc_reset"))
+	for(int i = 0 ; i < sizeof(commandHolder)/sizeof(commandStruct_s);i++)
 	{
-		DEBUG_PRINT("Processing...");
-		if(rtc_Reset())
-			DEBUG_PRINT("FAILED");
-		else
-			DEBUG_PRINT("DONE");
+		if(!strcmp(commandHolder[i].command,receptionData))
+		{
+			DEBUG_PRINT("Processing...");
 
+			if(commandHolder[i].commandHandler())
+				DEBUG_PRINT("FAILED");
+			else
+				DEBUG_PRINT("DONE");
+		}
 	}
+
 	switchCurrentSerialQueue();
 	dmaStartTransfer();
 }
@@ -70,10 +85,8 @@ void debugTask()
 	DEBUG_PRINT("*******************************************");
 
 
-	DEBUG_PRINT("Current Ring size %d",getCurrentSerialQueueSize());
+	DEBUG_PRINT("");
 
-
-	// vTaskDelay(2000);
 	xEventGroupSetBits(
 				xCreatedEventGroup,    /* The event group being updated. */
 				DEBUG_TASK_EVENT_BIT );
