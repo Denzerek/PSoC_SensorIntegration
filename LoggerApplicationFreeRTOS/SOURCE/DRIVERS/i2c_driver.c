@@ -50,7 +50,7 @@ i2cDriverState_t i2c_interrupt_eventsCallback(uint32_t event)
     if((CY_SCB_I2C_MASTER_ERR_EVENT & event ) == CY_SCB_I2C_MASTER_ERR_EVENT)
     {
         // i2cStatusDecode(i2c_scb3_master_get_status());
-        // I2CDRIVER_PRINTF("I2C hardware ERROR %X",i2c_scb3_master_get_status());
+        // I2CDRIVER_PRINT("I2C hardware ERROR %X",i2c_scb3_master_get_status());
         hardwareErrorFlag = true;
         // Cy_SCB_ClearMasterInterrupt();
         // i2c_scb3_master_clearInterrupt(CY_SCB_I2C_MASTER_ERR_EVENT);

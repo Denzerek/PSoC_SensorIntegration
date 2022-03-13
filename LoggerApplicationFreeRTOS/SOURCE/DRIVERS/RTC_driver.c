@@ -145,7 +145,7 @@ uint8_t rtc_displayAllTime()
     //         time.am_pm,time.tenthHour,time.hour,time.tenthMinutes,time.minutes,
     //         time.tenthSecond,time.seconds);
             
-    RTCDRIVER_PRINTF("%d %d %d %d %d %d %d %d\tTime  = %d%d : %d%d : %d%d ",time.century,
+    RTCDRIVER_PRINT("%d %d %d %d %d %d %d %d\tTime  = %d%d : %d%d : %d%d ",time.century,
             time.tenthMonth,time.month,time.tenthDate,time.date,time.day,time.hour_12_24,
             time.am_pm_20,   time.tenthHour,time.hour,time.tenthMinutes,time.minutes,
             time.tenthSecond,time.seconds);

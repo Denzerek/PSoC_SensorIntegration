@@ -4,14 +4,11 @@
 #include "debug.h"
 #include "i2c.h"
 
-#define I2C_DRIVER_DEBUG_ENABLE
 
 #ifdef I2C_DRIVER_DEBUG_ENABLE
-#define I2CDRIVER_PRINT(x,...)	debugTransmit(I2CDRIVER_TASKMSG,x)
-#define I2CDRIVER_PRINTF(x,...)	debugTransmit(I2CDRIVER_TASKMSG,x,__VA_ARGS__)
+#define I2CDRIVER_PRINT(...)	debugTransmit(I2CDRIVER_TASKMSG,__VA_ARGS__)
 #else
-#define I2CDRIVER_PRINT(x,...)	
-#define I2CDRIVER_PRINTF(x,...)
+#define I2CDRIVER_PRINT(...)
 #endif
 
 

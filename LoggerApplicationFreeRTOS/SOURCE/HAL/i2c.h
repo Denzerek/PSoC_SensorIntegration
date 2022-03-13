@@ -3,14 +3,11 @@
 #include "common.h"
 #include "debug.h"
 
-#define I2C_HAL_DEBUG_ENABLE
 
 #ifdef I2C_HAL_DEBUG_ENABLE
-#define I2CHAL_PRINT(x,...)	debugTransmit(I2CHAL_TASKMSG,x)
-#define I2CHAL_PRINTF(x,...)	debugTransmit(I2CHAL_TASKMSG,x,__VA_ARGS__)
+#define I2CHAL_PRINT(...)	debugTransmit(I2CHAL_TASKMSG,__VA_ARGS__)
 #else
-#define I2CHAL_PRINT(x,...)	
-#define I2CHAL_PRINTF(x,...)
+#define I2CHAL_PRINT(...)
 #endif
 
 

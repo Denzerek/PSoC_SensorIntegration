@@ -84,7 +84,7 @@ void sdCardStatusDecode( cy_en_sd_host_status_t sdCardStatus)
     }
 	if(sdCardStatus)
 	{
-		SDHAL_PRINTF("Unknown Error : %X",sdCardStatus);
+		SDHAL_PRINT("Unknown Error : %X",sdCardStatus);
 	}
 }
 

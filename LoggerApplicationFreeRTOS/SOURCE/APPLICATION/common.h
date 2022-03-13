@@ -29,7 +29,24 @@
 #define false 0
 #define true 1
 
-// #define SERIAL_DEBUG_WITH_DMA
+#define SERIAL_DEBUG_WITH_DMA
+
+
+//Application Debug
+#define RTC_DRIVER_DEBUG_ENABLE
+#define RTC_TASK_DEBUG_ENABLE
+#define SDCARD_DEBUG_ENABLE
+
+// Drivers Debug
+#define I2C_DRIVER_DEBUG_ENABLE
+#define SDCARD_DRIVER_DEBUG_ENABLE
+
+// HAL Debug
+#define I2C_HAL_DEBUG_ENABLE
+#define SDCARD_HAL_DEBUG_ENABLE
+
+
+
 
 #define DEBUG_TASK_EVENT_BIT        ( 1 << 0 )
 

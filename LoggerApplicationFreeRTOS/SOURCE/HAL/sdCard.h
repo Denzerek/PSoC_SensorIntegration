@@ -12,9 +12,11 @@
 #include "common.h"
 #include "debug.h"
 
-
-#define SDHAL_PRINT(x,...)	debugTransmit(SDHAL_TASKMSG,x)
-#define SDHAL_PRINTF(x,...)	debugTransmit(SDHAL_TASKMSG,x,__VA_ARGS__)
+#ifdef SDCARD_HAL_DEBUG_ENABLE
+#define SDHAL_PRINT(...)	debugTransmit(SDHAL_TASKMSG,__VA_ARGS__)
+#else
+#define SDHAL_PRINT(...)	
+#endif
 
 
 typedef struct{

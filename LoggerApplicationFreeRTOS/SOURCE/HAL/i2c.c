@@ -8,7 +8,7 @@ volatile static uint32_t i2cStatus = 0;
 void i2cCallback(uint32_t event)
 {
    i2cStatus |= event;
-   I2CHAL_PRINTF("event %X\n",event);
+   I2CHAL_PRINT("event %X\n",event);
 }
 void I2C_Isr(void)
 {

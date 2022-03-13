@@ -41,7 +41,7 @@ void RTCTask()
     while(1)
     {
         // vTaskDelay(1000);
-        // RTCTASK_PRINTF("%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
+        // RTCTASK_PRINT("%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
         // rtc_displayAllTime();
         // vTaskDelay(1000);
 

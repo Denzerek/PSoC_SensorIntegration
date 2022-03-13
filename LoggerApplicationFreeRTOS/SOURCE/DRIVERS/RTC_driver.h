@@ -9,14 +9,11 @@
 #include "i2c_driver.h"
 #include "debug.h"
 
-#define RTC_DRIVER_DEBUG_ENABLE
 
 #ifdef RTC_DRIVER_DEBUG_ENABLE
-#define RTCDRIVER_PRINT(x,...)	debugTransmit(RTCDRIVER_TASKMSG,x)
-#define RTCDRIVER_PRINTF(x,...)	debugTransmit(RTCDRIVER_TASKMSG,x,__VA_ARGS__)
+#define RTCDRIVER_PRINT(...)	debugTransmit(RTCDRIVER_TASKMSG,__VA_ARGS__)
 #else
-#define RTCDRIVER_PRINT(x,...)	
-#define RTCDRIVER_PRINTF(x,...)
+#define RTCDRIVER_PRINT(...)	
 #endif
 
 #define RTC_SLAVE_ADDRESS       0x68U

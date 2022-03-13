@@ -6,14 +6,12 @@
 #include "SDCardDriver.h"
 
 
-#define SDCARD_DEBUG_ENABLE
 
 #ifdef SDCARD_DEBUG_ENABLE
-#define SDCARD_PRINT(x,...)	    debugTransmit(SDCARD_TASKMSG,x)
-#define SDCARD_PRINTF(x,...)	debugTransmit(SDCARD_TASKMSG,x,__VA_ARGS__)
+#define SDCARD_PRINT(...)	debugTransmit(SDCARD_TASKMSG,__VA_ARGS__)
 #else
-#define SDCARD_PRINT(x,...)
-#define SDCARD_PRINTF(x,...)
+#define SDCARD_PRINT(...)
+#define SDCARD_PRINT(...)
 #endif
 
 

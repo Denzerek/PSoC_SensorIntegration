@@ -33,7 +33,7 @@ taskMsgStruct_s taskMsgCollection[] = {
 
 void debug_ReceptionData_Handler(uint8_t* receptionData)
 {
-	DEBUG_PRINTF("Processing Command : %s",receptionData);
+	DEBUG_PRINT("Processing Command : %s",receptionData);
 		switchCurrentSerialQueue();
 		dmaStartTransfer();
 }
@@ -57,14 +57,14 @@ void debugTask()
 
 	DEBUG_PRINT("\x1b[2J\x1b[;H");
 	DEBUG_PRINT("Serial Debug initialized");
-	DEBUG_PRINTF("BUILD DATE : %s",__DATE__);
-	DEBUG_PRINTF("BUILD TIME : %s",__TIME__);
+	DEBUG_PRINT("BUILD DATE : %s",__DATE__);
+	DEBUG_PRINT("BUILD TIME : %s",__TIME__);
 	DEBUG_PRINT("*******************************************");
 	DEBUG_PRINT("**********  Logger Application ************");
 	DEBUG_PRINT("*******************************************");
 
 
-	DEBUG_PRINTF("Current Ring size %d",getCurrentSerialQueueSize());
+	DEBUG_PRINT("Current Ring size %d",getCurrentSerialQueueSize());
 
 
 	// vTaskDelay(2000);
@@ -86,6 +86,7 @@ void debugTask()
 }
 
 
+#ifdef TEST
 
 void debugTransmit(dbgHeader_t dbgHeader,uint8_t* message, ...)
 {
@@ -110,4 +111,29 @@ void debugTransmit(dbgHeader_t dbgHeader,uint8_t* message, ...)
 	serialDebugTransmit("[ UNKNOWN ]\r\n");
 }
 
+#else
+void debugTransmit(dbgHeader_t dbgHeader, ...)
+{
 
+	uint8_t myData[100];
+	uint8_t myData1[100];
+	va_list argptr;
+	va_start(argptr, dbgHeader);
+	for(int i = 0; i < (sizeof(taskMsgCollection)/sizeof(taskMsgStruct_s)); i++)
+	{
+		if(taskMsgCollection[i].dbgHeader == dbgHeader)
+		{
+			vsprintf(myData, va_arg(argptr,char *), argptr);
+			va_end(argptr);
+
+			sprintf(myData1,"%s%s\r\n",taskMsgCollection[i].stringHeader,myData);
+			serialDebugTransmit(myData1);
+			return;
+
+		}
+	}
+	serialDebugTransmit("[ UNKNOWN ]\r\n");
+}
+
+
+#endif
