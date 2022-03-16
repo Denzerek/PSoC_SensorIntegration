@@ -10,11 +10,11 @@
 
 #include "newHavenLCD.h"
 
-#define DELAY_FACTOR 10
-#define LCD_DELAY(x)	for(int i = 0;i < (x + DELAY_FACTOR); i++)__asm volatile("NOP");
 
+static void lcdInstructionSet(uint8_t state);
+static void byteWrite(uint8_t data);
 
-void byteWrite(uint8_t data)
+static void byteWrite(uint8_t data)
 {
 	Cy_GPIO_Write(DB0_PORT, DB0_PIN,( data & 0x01) >> 0);
 	Cy_GPIO_Write(DB1_PORT, DB1_PIN,( data & 0x02) >> 1);
@@ -26,14 +26,9 @@ void byteWrite(uint8_t data)
 	Cy_GPIO_Write(DB7_PORT, DB7_PIN,( data & 0x80) >> 7);
 }
 
-typedef enum{
-	DISPLAY_OFF,
-	DISPLAY_ON,
-}displayState_e;
 
 
-
-void lcdInstructionSet(uint8_t state)
+static void lcdInstructionSet(uint8_t state)
 {
 	CLEAR_LCD_E();
 	CLEAR_RS();
@@ -50,7 +45,6 @@ void lcdInstructionSet(uint8_t state)
 
 }
 
-
 void lcdDataWrite(uint8_t writeData)
 {
 	CLEAR_LCD_E();
@@ -60,13 +54,9 @@ void lcdDataWrite(uint8_t writeData)
 	LCD_DELAY(14);
 	SET_LCD_E();
 	LCD_DELAY(5);
-
 	byteWrite(writeData);
 	LCD_DELAY(21);
-
-
 	CLEAR_LCD_E();
-
 }
 
 
@@ -125,39 +115,73 @@ void setYAddress(uint8_t address)
 
 }
 
+void LCDHalfSelect(lcdHalf_e halfSelect)
+{
+	switch(halfSelect)
+	{
+		case LCD_HALF_1:
+			CLEAR_CS2();
+			SET_CS1();
+			break;
+		case LCD_HALF_2:
+			CLEAR_CS1();
+			SET_CS2();
+			break;
+		default:
+			break;
+	}
+}
+
+
+void LCDDisplayBars()
+{
+	uint8_t togg = 0;
+
+	for(int k = 0;k<8;k++)
+	{
+		setXAddress(k);
+		for(int i = 0;i<64 ;)
+		{
+			setYAddress(i);
+			for(int j=0;j<4;j++)
+			{
+				if(togg)
+				{
+					lcdDataWrite(0xFF);
+				}
+				else
+				{
+					lcdDataWrite(0x00);
+				}
+				i++;
+			}
+			togg = !togg;
+		}
+	}
+
+}
+
+
+void LCDDisplayTest()
+{
+	LCDHalfSelect(LCD_HALF_1);
+	displayState(DISPLAY_OFF);
+	LCDDisplayBars();
+
+	LCDHalfSelect(LCD_HALF_2);
+	displayState(DISPLAY_OFF);
+	LCDDisplayBars();
+
+	LCDHalfSelect(LCD_HALF_1);
+	displayState(DISPLAY_ON);
+	LCDHalfSelect(LCD_HALF_2);
+	displayState(DISPLAY_ON);
+}
+
 
 void lcdInit()
 {
 	SET_RES();
 
-	CLEAR_CS2();
-	SET_CS1();
-
-	displayState(DISPLAY_ON);
-
-	setXAddress(5);
-	uint8_t togg = 0;
-
-	for(int i = 0;i<64 ;)
-	{
-		setYAddress(i);
-		for(int j=0;j<4;j++)
-		{
-			if(togg)
-			{
-				lcdDataWrite(0xFF);
-			}
-			else
-			{
-				lcdDataWrite(0x00);
-			}
-			i++;
-		}
-		togg = !togg;
-	}
-
-
-
-
-
+	LCDDisplayTest();
 }

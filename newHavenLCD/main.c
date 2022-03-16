@@ -43,7 +43,17 @@
 #include "cyhal.h"
 #include "cybsp.h"
 #include "newHavenLCD.h"
+#include "lcdDriver.h"
 
+
+
+void tester(uint8_t x, uint8_t y)
+{
+    for(int i =0; i< y*2 ;i+=2)
+    {
+        setPixel(i,y);  
+    }
+}
 
 int main(void)
 {
@@ -61,6 +71,14 @@ int main(void)
     __enable_irq();
 
     lcdInit();
+    CyDelay(1000);
+    clearLCD();
+
+    // setPixel(0,3);
+    // tester(0,5);
+    setPixel(0,63);
+    setPixel(0,62);
+    setPixel(0,61);
     for (;;)
     {
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);

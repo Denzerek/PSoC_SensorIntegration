@@ -13,6 +13,8 @@
 #include "cyhal.h"
 #include "cybsp.h"
 
+#define DELAY_FACTOR 10
+#define LCD_DELAY(x)	for(int i = 0;i < (x + DELAY_FACTOR); i++)__asm volatile("NOP");
 
 #define SET_RS()	Cy_GPIO_Write(RS_PORT, RS_PIN, 1u);
 #define CLEAR_RS()	Cy_GPIO_Write(RS_PORT, RS_PIN, 0u);
@@ -43,6 +45,29 @@
 #define SET_LCD_E()	Cy_GPIO_Write(LCD_E_PORT, LCD_E_PIN, 1u);
 #define CLEAR_LCD_E()	Cy_GPIO_Write(LCD_E_PORT, LCD_E_PIN, 0u);
 
+
+
+
+typedef enum{
+	DISPLAY_OFF,
+	DISPLAY_ON,
+}displayState_e;
+
+typedef enum{
+	LCD_HALF_1,
+	LCD_HALF_2,
+}lcdHalf_e;
+
+
+
+
+
+void LCDHalfSelect(lcdHalf_e halfSelect);
+void setYAddress(uint8_t address);
+void setXAddress(uint8_t page);
+void setDisplayStartLine(uint8_t lineNo);
+void displayState(displayState_e displayState);
+void lcdDataWrite(uint8_t writeData);
 void lcdInit();
 
 #endif /* NEWHAVENLCD_H_ */
