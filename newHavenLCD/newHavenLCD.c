@@ -262,7 +262,26 @@ void lcdInit()
 #if 1
 
 
-void lcdDataRead(uint8_t * readData1)
+void lcdStatusRead(uint8_t * readData)
+{
+	CLEAR_LCD_E();
+	LCD_DELAY(22);
+	SET_RS();
+	CLEAR_RW();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(50);
+	CLEAR_LCD_E();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(20);
+	byteRead(readData);
+	LCD_DELAY(20);
+	CLEAR_LCD_E();
+	LCD_DELAY(2);
+}
+
+void lcdDataRead(uint8_t * readData)
 {
 	CLEAR_LCD_E();
 	LCD_DELAY(22);
@@ -270,12 +289,31 @@ void lcdDataRead(uint8_t * readData1)
 	SET_RW();
 	LCD_DELAY(14);
 	SET_LCD_E();
+	LCD_DELAY(50);
+	CLEAR_LCD_E();
+	LCD_DELAY(14);
+	SET_LCD_E();
 	LCD_DELAY(20);
-	byteRead(readData1);
+	byteRead(readData);
 	LCD_DELAY(20);
 	CLEAR_LCD_E();
 	LCD_DELAY(2);
 }
+
+// void lcdDataRead(uint8_t * readData1)
+// {
+// 	CLEAR_LCD_E();
+// 	LCD_DELAY(22);
+// 	SET_RS();
+// 	SET_RW();
+// 	LCD_DELAY(14);
+// 	SET_LCD_E();
+// 	LCD_DELAY(20);
+// 	byteRead(readData1);
+// 	LCD_DELAY(20);
+// 	CLEAR_LCD_E();
+// 	LCD_DELAY(2);
+// }
 
 
 void lcdInit()

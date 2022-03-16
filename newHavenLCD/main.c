@@ -77,16 +77,16 @@ int main(void)
     // setPixel(0,3);
     // tester(0,5);
     setPixel(0,63);
-    setPixel(0,62);
-    setPixel(0,61);
+    setPixel(0,0);
+
+
+    for(int j =0; j<64;j++)
+    for(int i = 0;i< 64;i++)
+    setPixel(i+j,i);
 
     
-    for(int i = 0;i< 63;i++)
-    setPixel(i,i);
-
-    
-    for(int i = 0;i< 63;i++)
-    setPixel(i+64,i);
+    for(int i = 0;i< 64;i++)
+    setPixel(i+63,i);
 
     
     for (;;)

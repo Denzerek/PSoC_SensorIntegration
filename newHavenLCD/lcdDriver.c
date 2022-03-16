@@ -10,41 +10,50 @@
 
 #include "lcdDriver.h"
 #include "newHavenLCD.h"
+
+
+#define LCD_PAGE_SIZE	63
+#define LCD_COL_SIZE	128
+#define LCD_ROW_SIZE	8
+static volatile uint8_t glcdContextBuffer[LCD_ROW_SIZE][LCD_COL_SIZE];
+
+
+
 void setPixel(uint8_t x,uint8_t y)
 {
 
-	if(y > 63 || x > 128)
+	if(y > 63 || x > 127)
 	{
 		return;
 	}
 
-	LCDHalfSelect(LCD_HALF_1);
-	displayState(DISPLAY_ON);
-	LCDHalfSelect(LCD_HALF_2);
-	displayState(DISPLAY_ON);
-
     y = 63 - y;
+	uint8_t yaddress = (x>(LCD_PAGE_SIZE))?(x-LCD_PAGE_SIZE -1):x;
+	uint8_t xaddress = (y==0)?0:((y/8));
 
-	if(x < 64)
+
+	if(x <= 63)
 	{
 		LCDHalfSelect(LCD_HALF_1);
 	}
-	else if(x > 63 && x < 128)
+	if(x > 63 && x < 127)
 	{
 		LCDHalfSelect(LCD_HALF_2);
 	}
-	setXAddress((y==0)?0:((y/8)));
+	setXAddress(xaddress);
 	
-	setYAddress((x>63)?(x-63):x);
+	setYAddress(yaddress);
 	
 	volatile uint8_t pixel = 0;
-	lcdDataRead(&pixel);
-	lcdDataRead(&pixel);
-	setYAddress((x>63)?(x-63):x);
-	pixel |= 0x01 << (( (y % 8)));
+	pixel = glcdContextBuffer[xaddress][x];
+	pixel |= 0x01 << (y%8);
 	lcdDataWrite(pixel);
 
+	glcdContextBuffer[xaddress][x] = pixel;
+
 }
+
+
 
 
 void setAllPixelsTo(uint8_t data)
@@ -78,4 +87,5 @@ void setAllPixelsTo(uint8_t data)
 void clearLCD()
 {
 	setAllPixelsTo(0x00);
+	memset(glcdContextBuffer,0x00,sizeof(glcdContextBuffer));
 }
