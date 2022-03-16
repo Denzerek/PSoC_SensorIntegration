@@ -69,5 +69,6 @@ void setDisplayStartLine(uint8_t lineNo);
 void displayState(displayState_e displayState);
 void lcdDataWrite(uint8_t writeData);
 void lcdInit();
+void lcdDataRead(uint8_t * );
 
 #endif /* NEWHAVENLCD_H_ */

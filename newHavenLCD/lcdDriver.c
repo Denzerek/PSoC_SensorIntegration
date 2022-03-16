@@ -10,40 +10,18 @@
 
 #include "lcdDriver.h"
 #include "newHavenLCD.h"
-
-/*
- *
-void LCDHalfSelect(lcdHalf_e halfSelect);
-void setYAddress(uint8_t address);
-void setXAddress(uint8_t page);
-void setDisplayStartLine(uint8_t lineNo);
-void displayState(displayState_e displayState);
-void lcdInit();
- */
 void setPixel(uint8_t x,uint8_t y)
 {
 
+	if(y > 63 || x > 128)
+	{
+		return;
+	}
 
 	LCDHalfSelect(LCD_HALF_1);
 	displayState(DISPLAY_ON);
 	LCDHalfSelect(LCD_HALF_2);
 	displayState(DISPLAY_ON);
-
-
-
-	// LCDHalfSelect(LCD_HALF_1);
-	// setXAddress(0);
-	// setYAddress(0);
-
-
-	
-	// LCDHalfSelect(LCD_HALF_2);
-	// setXAddress(7);
-	// setYAddress(63);
-
-
-
-
 
     y = 63 - y;
 
@@ -58,13 +36,13 @@ void setPixel(uint8_t x,uint8_t y)
 	setXAddress((y==0)?0:((y/8)));
 	
 	setYAddress((x>63)?(x-63):x);
-	// setYAddress(0);
-
-	// uint8_t pixel = 0x01 << (y -(8 * ((y == 0)?0:(y / 8))));
-	uint8_t pixel = 0x01 << (( (y % 8)));
+	
+	volatile uint8_t pixel = 0;
+	lcdDataRead(&pixel);
+	lcdDataRead(&pixel);
+	setYAddress((x>63)?(x-63):x);
+	pixel |= 0x01 << (( (y % 8)));
 	lcdDataWrite(pixel);
-// lcdDataWrite(0x01);
-
 
 }
 

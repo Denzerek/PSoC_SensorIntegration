@@ -79,6 +79,16 @@ int main(void)
     setPixel(0,63);
     setPixel(0,62);
     setPixel(0,61);
+
+    
+    for(int i = 0;i< 63;i++)
+    setPixel(i,i);
+
+    
+    for(int i = 0;i< 63;i++)
+    setPixel(i+64,i);
+
+    
     for (;;)
     {
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);

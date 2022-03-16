@@ -60,6 +60,32 @@ void lcdDataWrite(uint8_t writeData)
 }
 
 
+typedef enum{
+	PIN_MODE_INPUT,
+	PIN_MODE_OUTPUT,
+}lcdDataPinState_e;
+
+lcdDataPinState_e lcdDataPinState = PIN_MODE_INPUT;
+
+
+void dataPinsStateCheckSet(lcdDataPinState_e setStateTo)
+{
+	if(setStateTo == lcdDataPinState)
+		return;
+
+	switch(setStateTo)
+	{
+		case PIN_MODE_INPUT:
+		break;
+		case PIN_MODE_OUTPUT:
+		break;
+		default:
+		break;
+	}
+
+}
+
+
 
 
 void displayState(displayState_e displayState)
@@ -179,9 +205,115 @@ void LCDDisplayTest()
 }
 
 
+static void byteRead(uint8_t *data)
+{
+	*data |= Cy_GPIO_Read(DB0_PORT,DB0_PIN) << 0;
+	*data |= Cy_GPIO_Read(DB1_PORT,DB1_PIN) << 1;
+	*data |= Cy_GPIO_Read(DB2_PORT,DB2_PIN) << 2;
+	*data |= Cy_GPIO_Read(DB3_PORT,DB3_PIN) << 3;
+	*data |= Cy_GPIO_Read(DB4_PORT,DB4_PIN) << 4;
+	*data |= Cy_GPIO_Read(DB5_PORT,DB5_PIN) << 5;
+	*data |= Cy_GPIO_Read(DB6_PORT,DB6_PIN) << 6;
+	*data |= Cy_GPIO_Read(DB7_PORT,DB7_PIN) << 7;
+}
+#if 0
+
+
+void lcdDataRead(uint8_t * readData1, uint8_t* readData2)
+{
+	CLEAR_LCD_E();
+	LCD_DELAY(22);
+	SET_RS();
+	SET_RW();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(20);
+	byteRead(readData1);
+	LCD_DELAY(20);
+	CLEAR_LCD_E();
+	LCD_DELAY(2);
+	byteRead(readData2);
+}
+
+
+void lcdInit()
+{
+	SET_RES();
+
+	LCDHalfSelect(LCD_HALF_1);
+	displayState(DISPLAY_ON);
+	setYAddress(0);
+	setXAddress(0);
+	lcdDataWrite(0xAA);
+	lcdDataWrite(0x66);
+	lcdDataWrite(0xAA);
+	CyDelay(2000);
+	volatile uint8_t data = 0;
+	uint8_t test = 0;
+	setYAddress(1);
+	setXAddress(0);
+    lcdDataRead(&test,&data);
+    lcdDataRead(&test,&data);
+
+	LCDDisplayTest();
+	
+}
+#else
+#if 1
+
+
+void lcdDataRead(uint8_t * readData1)
+{
+	CLEAR_LCD_E();
+	LCD_DELAY(22);
+	SET_RS();
+	SET_RW();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(20);
+	byteRead(readData1);
+	LCD_DELAY(20);
+	CLEAR_LCD_E();
+	LCD_DELAY(2);
+}
+
+
+void lcdInit()
+{
+	SET_RES();
+
+
+	LCDDisplayTest();
+	
+}
+#else
+
+void lcdDataRead(uint8_t * readData)
+{
+	CLEAR_LCD_E();
+	LCD_DELAY(22);
+	SET_RS();
+	SET_RW();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(50);
+	CLEAR_LCD_E();
+	LCD_DELAY(14);
+	SET_LCD_E();
+	LCD_DELAY(20);
+	byteRead(readData);
+	LCD_DELAY(20);
+	CLEAR_LCD_E();
+	LCD_DELAY(2);
+}
+
+
 void lcdInit()
 {
 	SET_RES();
 
 	LCDDisplayTest();
+	
 }
+#endif
+#endif

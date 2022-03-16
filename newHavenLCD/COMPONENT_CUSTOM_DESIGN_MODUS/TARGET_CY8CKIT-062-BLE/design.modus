@@ -99,7 +99,7 @@
                     <Alias value="CYBSP_J2_1"/>
                     <Alias value="DB3"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
@@ -114,14 +114,14 @@
                     <Alias value="CYBSP_J2_3"/>
                     <Alias value="DB2"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[10].pin[2]">
@@ -129,14 +129,14 @@
                     <Alias value="CYBSP_J2_5"/>
                     <Alias value="DB1"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[10].pin[3]">
@@ -144,14 +144,14 @@
                     <Alias value="CYBSP_J2_7"/>
                     <Alias value="DB0"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[10].pin[4]">
@@ -273,7 +273,7 @@
                     <Alias value="CYBSP_LED_RGB_GREEN"/>
                     <Alias value="CYBSP_USER_LED4"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_OD_DRIVESLOW"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
@@ -556,14 +556,14 @@
                     <Alias value="CYBSP_J2_10"/>
                     <Alias value="DB7"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[9].pin[5]">
@@ -571,14 +571,14 @@
                     <Alias value="CYBSP_J2_12"/>
                     <Alias value="DB6"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[9].pin[6]">
@@ -586,28 +586,28 @@
                     <Alias value="CYBSP_J2_16"/>
                     <Alias value="DB5"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="ioss[0].port[9].pin[7]">
                     <Alias value="CYBSP_J2_18"/>
                     <Alias value="DB4"/>
                     <Personality template="mxs40pin" version="1.1">
-                        <Param id="DriveModes" value="CY_GPIO_DM_STRONG"/>
+                        <Param id="DriveModes" value="CY_GPIO_DM_PULLUP_DOWN"/>
                         <Param id="initialState" value="1"/>
                         <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
                         <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
                         <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
                         <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
                         <Param id="sioOutputBuffer" value="true"/>
-                        <Param id="inFlash" value="true"/>
+                        <Param id="inFlash" value="false"/>
                     </Personality>
                 </Block>
                 <Block location="peri[0].div_8[0]">
