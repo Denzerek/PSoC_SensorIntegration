@@ -54,6 +54,41 @@ void setPixel(uint8_t x,uint8_t y)
 }
 
 
+void clearPixel(uint8_t x,uint8_t y)
+{
+
+	if(y > 63 || x > 127)
+	{
+		return;
+	}
+
+    y = 63 - y;
+	uint8_t yaddress = (x>(LCD_PAGE_SIZE))?(x-LCD_PAGE_SIZE -1):x;
+	uint8_t xaddress = (y==0)?0:((y/8));
+
+
+	if(x <= 63)
+	{
+		LCDHalfSelect(LCD_HALF_1);
+	}
+	if(x > 63 && x < 127)
+	{
+		LCDHalfSelect(LCD_HALF_2);
+	}
+	setXAddress(xaddress);
+
+	setYAddress(yaddress);
+
+	volatile uint8_t pixel = 0;
+	pixel = glcdContextBuffer[xaddress][x];
+	pixel = !(!pixel | (0x01 << (y%8)));
+	lcdDataWrite(pixel);
+
+	glcdContextBuffer[xaddress][x] = pixel;
+
+}
+
+
 
 
 void setAllPixelsTo(uint8_t data)

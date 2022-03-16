@@ -44,16 +44,8 @@
 #include "cybsp.h"
 #include "newHavenLCD.h"
 #include "lcdDriver.h"
+#include "coolshapes.h"
 
-
-
-void tester(uint8_t x, uint8_t y)
-{
-    for(int i =0; i< y*2 ;i+=2)
-    {
-        setPixel(i,y);  
-    }
-}
 
 int main(void)
 {
@@ -74,19 +66,13 @@ int main(void)
     CyDelay(1000);
     clearLCD();
 
-    // setPixel(0,3);
-    // tester(0,5);
-    setPixel(0,63);
-    setPixel(0,0);
+//    concentricRectDemo();
 
-
-    for(int j =0; j<64;j++)
-    for(int i = 0;i< 64;i++)
-    setPixel(i+j,i);
+    drawHollowCircle(60,30,25);
 
     
-    for(int i = 0;i< 64;i++)
-    setPixel(i+63,i);
+
+//    drawCircle(80,30,15);
 
     
     for (;;)

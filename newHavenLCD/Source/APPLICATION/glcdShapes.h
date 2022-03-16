@@ -14,8 +14,7 @@
 #include "cybsp.h"
 
 
-void drawCircle(uint8_t x, uint8_t y, uint8_t radius);
-
-// void drawCircle(int r);
+// void drawCircle(uint8_t x, uint8_t y, uint8_t radius);
+void drawBorder(uint8_t offset);
 
 #endif /* GLCDSHAPES_H_ */
