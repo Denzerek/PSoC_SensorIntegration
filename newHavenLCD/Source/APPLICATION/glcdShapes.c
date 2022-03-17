@@ -3,6 +3,7 @@
 #include "newHavenLCD.h"
 
 
+
 void drawBorder(uint8_t offset)
 {
     for(int i = offset; i < 128 - offset;i++)

@@ -48,6 +48,9 @@
 #include "glcdPrints.h"
 
 
+extern const uint32_t arraySize;
+extern const unsigned char arrayImage [];
+
 int main(void)
 {
     cy_rslt_t result;
@@ -74,11 +77,10 @@ int main(void)
 //    lcdPrintLine("hello there The HELL",LCD_LINE_6);
 //    lcdPrintLine("Woo Hooasfasfda\nsfdasgsusodfjsdf",LCD_LINE_2);
 //    lcdPrintLine("The powerrrrrrrrrrrrrrrrrrrrrrr",LCD_LINE_7);
-    lcdPrintLine("Hello ther \n My name is aslen \r\n and this is my code \r\n no body Messes with it!!!!!!!",LCD_LINE_1);
-    
+//    lcdPrintLine("Hello ther \n My name is aslen \r\n and this is my code \r\n no body Messes with it!!!!!!!",LCD_LINE_1);
 
-//    drawCircle(80,30,15);
-
+    uint8_t array[]={0xff,0xff};
+    printContinuousBytes(arrayImage);
     
     for (;;)
     {

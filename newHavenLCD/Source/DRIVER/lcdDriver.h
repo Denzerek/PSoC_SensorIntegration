@@ -21,5 +21,6 @@ void setPixel(uint8_t x,uint8_t y);
 void clearLCD();
 void clearPixel(uint8_t x,uint8_t y);
 
+void printContinuousBytes(uint8_t *array);
 
 #endif /* LCDDRIVER_H_ */

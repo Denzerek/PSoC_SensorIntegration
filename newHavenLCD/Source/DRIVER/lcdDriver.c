@@ -17,6 +17,40 @@
 static volatile uint8_t glcdContextBuffer[LCD_ROW_SIZE][LCD_COL_SIZE];
 
 
+void printContinuousBytes(uint8_t *array)
+{
+	uint8_t pageSelect = 0;
+	uint32_t arrayCounter = 0;
+	uint8_t xaddress = 0,yaddress = 0;
+	lcdPage1Select();
+	setXAddress(xaddress);
+	setYAddress(yaddress);
+	for(int i = 0; i < 128 ; i++)
+	{
+		for(int j = 0; j < 64; j++)
+		{
+			lcdDataWrite(array[arrayCounter++]);
+		}
+		if(((i+1)%2 ) == 0)
+		{
+			xaddress++;
+		}
+		if(pageSelect)
+		{
+			lcdPage1Select();
+		}
+		else
+		{
+			lcdPage2Select();
+		}
+		setYAddress(0);
+		setXAddress(xaddress);
+		pageSelect = !pageSelect;
+
+
+	}
+
+}
 
 void setPixel(uint8_t x,uint8_t y)
 {
