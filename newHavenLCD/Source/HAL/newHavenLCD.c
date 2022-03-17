@@ -14,6 +14,20 @@
 static void lcdInstructionSet(uint8_t state);
 static void byteWrite(uint8_t data);
 
+
+
+void LCDCmdWrite( uint8_t cmd)
+{
+	byteWrite(cmd);
+    CLEAR_RS();
+    CLEAR_RW();
+    SET_LCD_E();
+	Cy_SysLib_DelayUs(1);
+    CLEAR_LCD_E();
+}
+
+
+
 static void byteWrite(uint8_t data)
 {
 	Cy_GPIO_Write(DB0_PORT, DB0_PIN,( data & 0x01) >> 0);

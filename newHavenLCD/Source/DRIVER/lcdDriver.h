@@ -12,6 +12,10 @@
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
+#include "newHavenLCD.h"
+
+#define lcdPage1Select()	LCDHalfSelect(LCD_HALF_1);
+#define lcdPage2Select()	LCDHalfSelect(LCD_HALF_2);
 
 void setPixel(uint8_t x,uint8_t y);
 void clearLCD();

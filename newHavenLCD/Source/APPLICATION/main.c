@@ -45,6 +45,7 @@
 #include "newHavenLCD.h"
 #include "lcdDriver.h"
 #include "coolshapes.h"
+#include "glcdPrints.h"
 
 
 int main(void)
@@ -67,9 +68,13 @@ int main(void)
     clearLCD();
 
 //    concentricRectDemo();
+//
+//    drawCircle(60,30,25);
 
-    drawHollowCircle(60,30,25);
-
+//    lcdPrintLine("hello there The HELL",LCD_LINE_6);
+//    lcdPrintLine("Woo Hooasfasfda\nsfdasgsusodfjsdf",LCD_LINE_2);
+//    lcdPrintLine("The powerrrrrrrrrrrrrrrrrrrrrrr",LCD_LINE_7);
+    lcdPrintLine("Hello ther \n My name is aslen \r\n and this is my code \r\n no body Messes with it!!!!!!!",LCD_LINE_1);
     
 
 //    drawCircle(80,30,15);

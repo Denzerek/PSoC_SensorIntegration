@@ -9,7 +9,6 @@
 
 
 #include "lcdDriver.h"
-#include "newHavenLCD.h"
 
 
 #define LCD_PAGE_SIZE	63
@@ -96,6 +95,7 @@ void setAllPixelsTo(uint8_t data)
 	for(int j = 0; j< 2;j++)
 	{
 		LCDHalfSelect(j);
+		
 		displayState(DISPLAY_OFF);
 	}
 	for(int j = 0; j< 2;j++)

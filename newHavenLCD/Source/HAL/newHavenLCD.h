@@ -70,5 +70,6 @@ void displayState(displayState_e displayState);
 void lcdDataWrite(uint8_t writeData);
 void lcdInit();
 void lcdDataRead(uint8_t * );
+void LCDCmdWrite( uint8_t cmd);
 
 #endif /* NEWHAVENLCD_H_ */
