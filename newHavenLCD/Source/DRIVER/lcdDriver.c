@@ -25,7 +25,7 @@ void printContinuousBytes(uint8_t *array)
 	lcdPage1Select();
 	setXAddress(xaddress);
 	setYAddress(yaddress);
-	for(int i = 0; i < 128 ; i++)
+	for(int i = 0; i < 16 ; i++)
 	{
 		for(int j = 0; j < 64; j++)
 		{
@@ -46,8 +46,6 @@ void printContinuousBytes(uint8_t *array)
 		setYAddress(0);
 		setXAddress(xaddress);
 		pageSelect = !pageSelect;
-
-
 	}
 
 }
