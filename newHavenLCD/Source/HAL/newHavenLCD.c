@@ -44,9 +44,10 @@ static void byteWrite(uint8_t data)
 static void lcdInstructionSet(uint8_t state)
 {
 	CLEAR_LCD_E();
+	LCD_DELAY(22);
 	CLEAR_RS();
 	CLEAR_RW();
-	LCD_DELAY(36);
+	LCD_DELAY(14);
 	SET_LCD_E();
 	LCD_DELAY(5);
 	byteWrite(state);
