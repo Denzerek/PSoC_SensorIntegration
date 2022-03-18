@@ -44,12 +44,14 @@
 #include "cybsp.h"
 #include "newHavenLCD.h"
 #include "lcdDriver.h"
-#include "coolshapes.h"
 #include "glcdPrints.h"
 
 
-extern const uint32_t arraySize;
-extern const unsigned char arrayImage [];
+#include "lcdScreens.h"
+#include "buttonDriver.h"
+
+
+
 
 int main(void)
 {
@@ -63,31 +65,34 @@ int main(void)
     }
 
     Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);
+    userButtonInit();
+
 
     __enable_irq();
 
     lcdInit();
+    CyDelay(500);
+    clearLCD();
+
+    InfineonLogoScreen();
     CyDelay(1000);
     clearLCD();
 
-//    concentricRectDemo();
-//
-    drawCircle(60,30,50);
 
-//    lcdPrintLine("hello there The HELL",LCD_LINE_6);
-//    lcdPrintLine("Woo Hooasfasfda\nsfdasgsusodfjsdf",LCD_LINE_2);
-//    lcdPrintLine("The powerrrrrrrrrrrrrrrrrrrrrrr",LCD_LINE_7);
-//    lcdPrintLine("Hello ther \n My name is aslen \r\n and this is my code \r\n no body Messes with it!!!!!!!",LCD_LINE_1);
-
-//    uint8_t array[]={0xff,0xff};
-//    printContinuousBytes(arrayImage);
     
     for (;;)
     {
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);
-        CyDelay(1000);
+        CyDelay(500);
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 1);
-        CyDelay(1000);
+        CyDelay(500);
+
+//        if(getButtonPressStatus())
+        {
+            clearLCD();
+        	lcdSwitchScreens();
+        }
+
     }
 }
 

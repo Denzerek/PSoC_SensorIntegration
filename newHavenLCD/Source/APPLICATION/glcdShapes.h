@@ -12,9 +12,11 @@
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
+#include "lcdDriver.h"
 
-
-// void drawCircle(uint8_t x, uint8_t y, uint8_t radius);
+void drawCircle(int cx, int cy,int r);
 void drawBorder(uint8_t offset);
+void drawBarGraph(uint8_t x,uint8_t width,uint8_t height);
+void drawBarGraphY(uint8_t x,uint8_t y,uint8_t width,uint8_t height);
 
 #endif /* GLCDSHAPES_H_ */

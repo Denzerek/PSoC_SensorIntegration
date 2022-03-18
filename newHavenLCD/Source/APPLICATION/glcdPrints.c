@@ -13,10 +13,13 @@
 extern const uint32_t lengthofLCDCharMapMap;
 extern const LCDChar_s LCDCharMap[];
 
-void lcdPrint(char * string)
+void lcdPrintLineOver(char * string)
 {
 
 }
+
+
+
 void lcdPrintLine(char * stringD,lcdLineNum_e lcdLineNum)
 {
 	uint8_t pageCounter = 0;

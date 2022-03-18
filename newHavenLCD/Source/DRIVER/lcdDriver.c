@@ -53,7 +53,7 @@ void printContinuousBytes(uint8_t *array)
 void setPixel(uint8_t x,uint8_t y)
 {
 
-	if(y > 63 || x > 127)
+	if(y > 63 || x > 128)
 	{
 		return;
 	}
@@ -62,12 +62,20 @@ void setPixel(uint8_t x,uint8_t y)
 	uint8_t yaddress = (x>(LCD_PAGE_SIZE))?(x-LCD_PAGE_SIZE -1):x;
 	uint8_t xaddress = (y==0)?0:((y/8));
 
+#define SPEED_BOOSTER
+#ifdef SPEED_BOOSTER
+	uint8_t pixelToSet =  0x01 << (y%8);
+	if((glcdContextBuffer[xaddress][x] & pixelToSet) == pixelToSet)
+	{
+		return;
+	}
+#endif
 
 	if(x <= 63)
 	{
 		LCDHalfSelect(LCD_HALF_1);
 	}
-	if(x > 63 && x < 127)
+	if(x > 63 && x < 128)
 	{
 		LCDHalfSelect(LCD_HALF_2);
 	}
