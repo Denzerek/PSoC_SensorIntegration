@@ -13,28 +13,24 @@
 extern const uint32_t lengthofLCDCharMapMap;
 extern const LCDChar_s LCDCharMap[];
 
-void lcdPrintLineOver(char * string)
-{
-
-}
 
 
 
-void lcdPrintLine(char * stringD,lcdLineNum_e lcdLineNum)
+void lcdPrint(char * stringD,lcdLineNum_e lcdLineNum,uint8_t overWrite)
 {
 	uint8_t pageCounter = 0;
 //	char stringD[20];
 //	sprintf(stringD,string);
 
 	lcdPage1Select();
-	setXAddress(lcdLineNum);
-	setYAddress(0);
+	setLcdXaddress(lcdLineNum);
+	setLCDYAddress(0);
 	for(int j = 0;j<strlen(stringD);j++)
 	{
 		if(stringD[j] == '\r')
 		{
 			lcdPage1Select();
-			setYAddress(0);
+			setLCDYAddress(0);
 			pageCounter = 0;
 		}
 		else
@@ -43,8 +39,8 @@ void lcdPrintLine(char * stringD,lcdLineNum_e lcdLineNum)
 			lcdPage1Select();
 			pageCounter = 0;
 			lcdLineNum+=1;
-			setXAddress(lcdLineNum);
-			setYAddress(0);
+			setLcdXaddress(lcdLineNum);
+			setLCDYAddress(0);
 		}
 		else
 		for(int i = 0;i< (lengthofLCDCharMapMap);i++)
@@ -53,21 +49,28 @@ void lcdPrintLine(char * stringD,lcdLineNum_e lcdLineNum)
 			{
 				for(int k = 0;k < FONT_SIZE ;k++)
 				{
-					lcdDataWrite(LCDCharMap[i].LCDPixelData[k]);
+					if(overWrite)
+					{
+						setLCDData(LCDCharMap[i].LCDPixelData[k] | getLCDContexData());
+					}
+					else
+					{
+						setLCDData(LCDCharMap[i].LCDPixelData[k]);
+					}
 					pageCounter++;
 					if(pageCounter == 64)
 					{
 						lcdPage2Select();
-						setXAddress(lcdLineNum);
-						setYAddress(0);
+						setLcdXaddress(lcdLineNum);
+						setLCDYAddress(0);
 					}
 					if(pageCounter > 125)
 					{
 						lcdPage1Select();
 						pageCounter = 0;
 						lcdLineNum+=1;
-						setXAddress(lcdLineNum);
-						setYAddress(0);
+						setLcdXaddress(lcdLineNum);
+						setLCDYAddress(0);
 					}
 				}
 			}

@@ -13,11 +13,12 @@
 #include "cyhal.h"
 #include "cybsp.h"
 #include "lcdDriver.h"
-#include "newHavenLCD.h"
 
 
 #include <stdarg.h>
 
+#define lcdPrintLineOver(string,lineNum)	lcdPrint(string,lineNum,1)
+#define lcdPrintLine(string,lineNum)		lcdPrint(string,lineNum,0)
 #define FONT_SIZE	6
 typedef struct{
     char Letter;
@@ -37,7 +38,6 @@ typedef enum{
 }lcdLineNum_e;
 
 
-void lcdPrintLine(char * string,lcdLineNum_e lcdLineNum);
 
 
 #endif /* SOURCE_APPLICATION_GLCDPRINTS_H_ */

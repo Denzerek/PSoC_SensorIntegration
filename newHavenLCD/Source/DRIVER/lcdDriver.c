@@ -14,7 +14,89 @@
 #define LCD_PAGE_SIZE	63
 #define LCD_COL_SIZE	128
 #define LCD_ROW_SIZE	8
+
+
+static volatile uint8_t glcdContextX;
+static volatile uint8_t glcdContextY;
+static volatile lcdHalf_e glcdContextHalf;
+static volatile uint8_t glcdContextBuf1[LCD_ROW_SIZE][LCD_PAGE_SIZE+1];
+static volatile uint8_t glcdContextBuf2[LCD_ROW_SIZE][LCD_PAGE_SIZE+1];
 static volatile uint8_t glcdContextBuffer[LCD_ROW_SIZE][LCD_COL_SIZE];
+
+
+
+
+void setLcdXaddress(uint8_t page)
+{
+	setXAddress(page);
+	glcdContextX = page;
+}
+
+
+void setLCDYAddress(uint8_t page)
+{
+	setYAddress(page);
+	glcdContextY = page;
+}
+
+uint8_t getLCDData(uint8_t x, uint8_t y,lcdHalf_e halfselect)
+{
+	uint8_t readData;
+	switch(halfselect)
+	{
+	case LCD_HALF_1:
+		readData = glcdContextBuf1[x][y] ;
+		break;
+	case LCD_HALF_2:
+		readData = glcdContextBuf2[x][y] ;
+		break;
+	}
+	return readData;
+
+}
+
+
+uint8_t getLCDContexData()
+{
+	uint8_t readData;
+	switch(glcdContextHalf)
+	{
+	case LCD_HALF_1:
+		readData = glcdContextBuf1[glcdContextX][glcdContextY] ;
+		break;
+	case LCD_HALF_2:
+		readData = glcdContextBuf2[glcdContextX][glcdContextY] ;
+		break;
+	}
+	return readData;
+}
+
+void setLCDData(uint8_t writeData)
+{
+	lcdDataWrite(writeData);
+	switch(glcdContextHalf)
+	{
+	case LCD_HALF_1:
+		glcdContextBuf1[glcdContextX][glcdContextY] = writeData;
+		break;
+	case LCD_HALF_2:
+		glcdContextBuf2[glcdContextX][glcdContextY] = writeData;
+		break;
+	}
+	glcdContextY++;
+	if(glcdContextY > 63)
+	{
+		glcdContextY = 0;
+	}
+}
+
+
+void setLCDHalf(lcdHalf_e lcdHalf)
+{
+	LCDHalfSelect(lcdHalf);
+	glcdContextHalf = lcdHalf;
+}
+
 
 
 void printContinuousBytes(uint8_t *array)
@@ -23,13 +105,13 @@ void printContinuousBytes(uint8_t *array)
 	uint32_t arrayCounter = 0;
 	uint8_t xaddress = 0,yaddress = 0;
 	lcdPage1Select();
-	setXAddress(xaddress);
-	setYAddress(yaddress);
+	setLcdXaddress(xaddress);
+	setLCDYAddress(yaddress);
 	for(int i = 0; i < 16 ; i++)
 	{
 		for(int j = 0; j < 64; j++)
 		{
-			lcdDataWrite(array[arrayCounter++]);
+			setLCDData(array[arrayCounter++]);
 		}
 		if(((i+1)%2 ) == 0)
 		{
@@ -43,8 +125,8 @@ void printContinuousBytes(uint8_t *array)
 		{
 			lcdPage2Select();
 		}
-		setYAddress(0);
-		setXAddress(xaddress);
+		setLCDYAddress(0);
+		setLcdXaddress(xaddress);
 		pageSelect = !pageSelect;
 	}
 
@@ -62,31 +144,37 @@ void setPixel(uint8_t x,uint8_t y)
 	uint8_t yaddress = (x>(LCD_PAGE_SIZE))?(x-LCD_PAGE_SIZE -1):x;
 	uint8_t xaddress = (y==0)?0:((y/8));
 
+
+	volatile uint8_t pixel = 0, halfselect;
+	if(x <= 63)
+	{
+		halfselect = LCD_HALF_1;
+	}
+	if(x > 63 && x < 128)
+	{
+		halfselect = LCD_HALF_2;
+	}
+
 #define SPEED_BOOSTER
 #ifdef SPEED_BOOSTER
 	uint8_t pixelToSet =  0x01 << (y%8);
-	if((glcdContextBuffer[xaddress][x] & pixelToSet) == pixelToSet)
+
+	if((getLCDData(xaddress,yaddress,halfselect) & pixelToSet) == pixelToSet)
 	{
 		return;
 	}
 #endif
+	setLCDHalf(halfselect);
 
-	if(x <= 63)
-	{
-		LCDHalfSelect(LCD_HALF_1);
-	}
-	if(x > 63 && x < 128)
-	{
-		LCDHalfSelect(LCD_HALF_2);
-	}
-	setXAddress(xaddress);
-	
-	setYAddress(yaddress);
-	
-	volatile uint8_t pixel = 0;
-	pixel = glcdContextBuffer[xaddress][x];
+	setLcdXaddress(xaddress);
+
+	setLCDYAddress(yaddress);
+
+//	pixel = glcdContextBuffer[xaddress][x];
+
+	pixel = getLCDData(xaddress,yaddress,halfselect);
 	pixel |= 0x01 << (y%8);
-	lcdDataWrite(pixel);
+	setLCDData(pixel);
 
 	glcdContextBuffer[xaddress][x] = pixel;
 
@@ -108,20 +196,20 @@ void clearPixel(uint8_t x,uint8_t y)
 
 	if(x <= 63)
 	{
-		LCDHalfSelect(LCD_HALF_1);
+		setLCDHalf(LCD_HALF_1);
 	}
 	if(x > 63 && x < 127)
 	{
-		LCDHalfSelect(LCD_HALF_2);
+		setLCDHalf(LCD_HALF_2);
 	}
-	setXAddress(xaddress);
+	setLcdXaddress(xaddress);
 
-	setYAddress(yaddress);
+	setLCDYAddress(yaddress);
 
 	volatile uint8_t pixel = 0;
 	pixel = glcdContextBuffer[xaddress][x];
 	pixel = !(!pixel | (0x01 << (y%8)));
-	lcdDataWrite(pixel);
+	setLCDData(pixel);
 
 	glcdContextBuffer[xaddress][x] = pixel;
 
@@ -134,27 +222,27 @@ void setAllPixelsTo(uint8_t data)
 {
 	for(int j = 0; j< 2;j++)
 	{
-		LCDHalfSelect(j);
-		
+		setLCDHalf(j);
+
 		displayState(DISPLAY_OFF);
 	}
 	for(int j = 0; j< 2;j++)
 	{
-		LCDHalfSelect(j);
+		setLCDHalf(j);
 		for(int k = 0;k<8;k++)
 		{;
-			setXAddress(k);
-			setYAddress(0);
+			setLcdXaddress(k);
+			setLCDYAddress(0);
 			for(int i = 0;i<64 ;i++)
 			{
-				lcdDataWrite(data);
+				setLCDData(data);
 			}
 		}
 	}
-	
+
 	for(int j = 0; j< 2;j++)
 	{
-		LCDHalfSelect(j);
+		setLCDHalf(j);
 		displayState(DISPLAY_ON);
 	}
 }
@@ -162,5 +250,6 @@ void setAllPixelsTo(uint8_t data)
 void clearLCD()
 {
 	setAllPixelsTo(0x00);
-	memset(glcdContextBuffer,0x00,sizeof(glcdContextBuffer));
 }
+
+

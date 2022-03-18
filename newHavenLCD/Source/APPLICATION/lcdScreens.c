@@ -18,6 +18,7 @@ void InfineonLogoScreen();
 void ConcentriRectangleDemo();
 void BarGrsphDemo();
 void fontDemo();
+void lcdOverWritePrintDemo();
 typedef enum{
 	SCREEN_MIN,
 	fontDemo_n,
@@ -25,6 +26,7 @@ typedef enum{
 	ConcentriRectangleDemo_n,
 	CirclesDemo_n,
 	BarGrsphDemo_n,
+	lcdOverWritePrintDemo_n,
 	SCREEN_MAX
 }lcdScreens_n;
 
@@ -39,6 +41,7 @@ lcdScreens_s lcdScreens[] = {
 		{ConcentriRectangleDemo_n,ConcentriRectangleDemo},
 		{CirclesDemo_n,CirclesDemo},
 		{BarGrsphDemo_n,BarGrsphDemo},
+		{lcdOverWritePrintDemo_n,lcdOverWritePrintDemo},
 };
 
 void lcdSwitchScreens()
@@ -57,6 +60,15 @@ void lcdSwitchScreens()
 	screenNum++;
 }
 
+
+void lcdOverWritePrintDemo()
+{
+	ConcentriRectangleDemo();
+
+	lcdPrintLineOver("    Demonstrating string write over an image",LCD_LINE_2);
+
+	lcdPrintLine("    This string does not write over image",LCD_LINE_5);
+}
 
 void ConcentriRectangleDemo()
 {
@@ -81,7 +93,7 @@ void InfineonLogoScreen()
 
 void fontDemo()
 {
-	lcdPrintLine("This is a demo\nDemonstratin GLCD\n !!<>?@#", LCD_LINE_1);
+	lcdPrintLine("This is a demo  \n\nDemonstratin of GLCD\n \n\n!!<>?@#", LCD_LINE_2);
 }
 
 void BarGrsphDemo()

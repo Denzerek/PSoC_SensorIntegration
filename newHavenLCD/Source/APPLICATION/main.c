@@ -85,8 +85,8 @@ int main(void)
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);
         CyDelay(500);
         Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 1);
-        CyDelay(500);
-
+        CyDelay(100);
+//
 //        if(getButtonPressStatus())
         {
             clearLCD();

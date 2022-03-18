@@ -14,9 +14,17 @@
 #include "cybsp.h"
 #include "newHavenLCD.h"
 
-#define lcdPage1Select()	LCDHalfSelect(LCD_HALF_1);
-#define lcdPage2Select()	LCDHalfSelect(LCD_HALF_2);
+#define lcdPage1Select()	setLCDHalf(LCD_HALF_1);
+#define lcdPage2Select()	setLCDHalf(LCD_HALF_2);
 
+void setLcdXaddress(uint8_t page);
+void setLCDYAddress(uint8_t page);
+uint8_t getLCDData(uint8_t x, uint8_t y,lcdHalf_e halfselect);
+void setLCDData(uint8_t writeData);
+void setLCDHalf(lcdHalf_e lcdHalf);
+
+
+uint8_t getLCDContexData();
 void setPixel(uint8_t x,uint8_t y);
 void clearLCD();
 void clearPixel(uint8_t x,uint8_t y);
