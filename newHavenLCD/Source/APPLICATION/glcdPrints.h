@@ -17,8 +17,10 @@
 
 #include <stdarg.h>
 
-#define lcdPrintLineOver(string,lineNum)	lcdPrint(string,lineNum,1)
-#define lcdPrintLine(string,lineNum)		lcdPrint(string,lineNum,0)
+#define lcdPrintLineOver(string,lineNum)	lcdPrint(string,lineNum,true,false)
+#define lcdPrintLine(string,lineNum)		lcdPrint(string,lineNum,false,false)
+#define lcdPrintLineI(string,lineNum)		lcdPrint(string,lineNum,false,true)
+#define lcdPrintLineOverI(string,lineNum)	lcdPrint(string,lineNum,true,true)
 #define FONT_SIZE	6
 typedef struct{
     char Letter;
@@ -38,6 +40,7 @@ typedef enum{
 }lcdLineNum_e;
 
 
+void lcdPrint(char * stringD,lcdLineNum_e lcdLineNum,uint8_t overWrite,uint8_t invertFlag);
 
 
 #endif /* SOURCE_APPLICATION_GLCDPRINTS_H_ */

@@ -16,11 +16,10 @@ extern const LCDChar_s LCDCharMap[];
 
 
 
-void lcdPrint(char * stringD,lcdLineNum_e lcdLineNum,uint8_t overWrite)
+void lcdPrint(char * stringD,lcdLineNum_e lcdLineNum,uint8_t overWrite,uint8_t invertFlag)
 {
 	uint8_t pageCounter = 0;
-//	char stringD[20];
-//	sprintf(stringD,string);
+	uint8_t dataToWrite;
 
 	lcdPage1Select();
 	setLcdXaddress(lcdLineNum);
@@ -49,21 +48,36 @@ void lcdPrint(char * stringD,lcdLineNum_e lcdLineNum,uint8_t overWrite)
 			{
 				for(int k = 0;k < FONT_SIZE ;k++)
 				{
+					/* Set teh overWrite flag to write over any images already present in the LCD screen*/
 					if(overWrite)
 					{
-						setLCDData(LCDCharMap[i].LCDPixelData[k] | getLCDContexData());
+						dataToWrite = LCDCharMap[i].LCDPixelData[k] | getLCDContexData();
 					}
+					/*If overWriteFlag is disabled, image section will be replaved by the string*/
 					else
 					{
-						setLCDData(LCDCharMap[i].LCDPixelData[k]);
+						dataToWrite = LCDCharMap[i].LCDPixelData[k] ;
 					}
+
+					if(invertFlag)
+					{
+						dataToWrite = dataToWrite ^ 0xFF;
+					}
+
+					setLCDData(dataToWrite);
+
+
+					/* Count the number of bytes written(basically x axis increment)*/
 					pageCounter++;
+					/* if x axis increment is greater than 64, switch LCD half to next one*/
 					if(pageCounter == 64)
 					{
 						lcdPage2Select();
 						setLcdXaddress(lcdLineNum);
 						setLCDYAddress(0);
 					}
+					/* if x axis increment is greater than 128, one line on LCD has been fully traversed and next data to be
+					 * written in next line of LCD*/
 					if(pageCounter > 125)
 					{
 						lcdPage1Select();

@@ -19,6 +19,7 @@ void ConcentriRectangleDemo();
 void BarGrsphDemo();
 void fontDemo();
 void lcdOverWritePrintDemo();
+void lcdOverWriteInvertPrintDemo();
 typedef enum{
 	SCREEN_MIN,
 	fontDemo_n,
@@ -27,6 +28,7 @@ typedef enum{
 	CirclesDemo_n,
 	BarGrsphDemo_n,
 	lcdOverWritePrintDemo_n,
+	lcdOverWriteInvertPrintDemo_n,
 	SCREEN_MAX
 }lcdScreens_n;
 
@@ -42,6 +44,7 @@ lcdScreens_s lcdScreens[] = {
 		{CirclesDemo_n,CirclesDemo},
 		{BarGrsphDemo_n,BarGrsphDemo},
 		{lcdOverWritePrintDemo_n,lcdOverWritePrintDemo},
+		{lcdOverWriteInvertPrintDemo_n,lcdOverWriteInvertPrintDemo},
 };
 
 void lcdSwitchScreens()
@@ -60,6 +63,12 @@ void lcdSwitchScreens()
 	screenNum++;
 }
 
+
+void lcdOverWriteInvertPrintDemo()
+{
+	setAllPixelsTo(0xFF);
+	lcdPrintLineI("This string inverts the background of the string its written",LCD_LINE_4);
+}
 
 void lcdOverWritePrintDemo()
 {
