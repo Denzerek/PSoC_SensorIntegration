@@ -1,9 +1,18 @@
-#include "RTC_Driver.h"
+#include "rtc_driver.h"
+#include "i2c.h"
 
-
-
+#define RTC_SLAVE_ADDRESS       0x68U
+#define RTC_SECONDS_REGISTER    0x00U
+#define RTC_MINUTES_REGISTER    0x01U
+#define RTC_HOURS_REGISTER      0x02U
+#define RTC_DAY_REGISTER        0x03U
+#define RTC_DATE_REGISTER        0x04U
+#define RTC_MONTH_REGISTER      0x05U
+#define RTC_YEAR_REGISTER      0x06U
 uint8_t readBuffer[20];
 uint8_t writeBuffer[20];
+
+
 
 
 typedef union{
@@ -31,7 +40,7 @@ uint8_t rtc_getHours()
     uint8_t hourTemp;
     i2c_readByte(RTC_SLAVE_ADDRESS,RTC_HOURS_REGISTER,&RTCHour);
     hourTemp = RTCHour.tenthHour;
-    if((RTCHour.hour_20_am_pm) && !(RTCHour.hour_12_24))
+    if((RTCHour.hour_20_am_pm) && !(RTCHour.hour_12_24_format))
         hourTemp = 2;
     return ( hourTemp* 10 + RTCHour.hour);
 }
@@ -69,30 +78,10 @@ void rtc_getAllRegister(RTCTimeRegisterStruct_s *customTime)
 {
     i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,customTime,sizeof(RTCTimeRegisterStruct_s));
 }
-
-
-
 void rtc_setCustom(RTCTimeRegisterStruct_s customTime)
 {
     i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,&customTime,sizeof(customTime));
 }
-
-
-typedef enum{
-	hr12_FORMAT,
-	hr24_FORMAT,
-}timeFormat_e;
-//void rtc_setTimeFormat()
-//{
-//	switch()
-//	{
-//	case hr12_FORMAT:
-//		break;
-//	case hr24_FORMAT:
-//		break;
-//	}
-//}
-
 
 void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_t min,uint8_t sec)
 {
@@ -110,7 +99,7 @@ void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_
     customTime.tenthSecond = sec /10;
 
     // customTime.hour_12_24 = 0;
-    // customTime.hour_20_am_pm = 1;
+    // customTime.am_pm_20 = 1;
 
     customTime.month = mm %10;
     customTime.tenthMonth = mm/10;
@@ -126,10 +115,11 @@ void rtc_setTime(uint8_t yyyy,uint8_t mm, uint8_t dd,uint8_t d,uint8_t hr,uint8_
     rtc_setCustom(customTime);
 }
 
-
-
-uint8_t rtc_Reset()
+void rtc_Reset()
 {
+    static int onceflag;
+    if(onceflag) return;
+    onceflag ++;
     RTCTimeRegisterStruct_s time = {
     .seconds= 0,
     .tenthSecond= 0,
@@ -137,6 +127,7 @@ uint8_t rtc_Reset()
     .tenthMinutes= 0,
     .hour= 0,
     .tenthHour= 0,
+    .am_pm_20= 0,
     .day=0,
     .date= 0,
     .tenthDate= 0,
@@ -144,55 +135,24 @@ uint8_t rtc_Reset()
     .tenthMonth= 0,
     .century= 0,
     };
-    return i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,(uint8_t*)&time,sizeof(time));
+    writeBuffer[0] = RTC_SECONDS_REGISTER;
+    i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,&time,sizeof(time));
 }
-
-
-uint8_t rtc_get_mmddyyhhmmss_asString(char * RTCTime)
-{
-    RTCTimeRegisterStruct_s customTime;
-    if(i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,&customTime,sizeof(RTCTimeRegisterStruct_s)) != I2C_DRIVER_RW_SUCCESS)
-    {
-        return I2C_DRIVER_RW_FAILED;
-    }
-
-	uint8_t yy = customTime.tenthYear * 10 + customTime.year;
-
-	uint8_t mo =  customTime.tenthMonth * 10 + customTime.month;
-
-	uint8_t dd =  customTime.tenthDate * 10 + customTime.date;
-
-    uint8_t hourTemp;
-	if((customTime.hour_20_am_pm) && !(customTime.hour_12_24))
-        hourTemp = 2;
-    uint8_t hh = ( hourTemp* 10 + customTime.hour);
-
-	uint8_t mm = (customTime.tenthMinutes* 10+ customTime.minutes );
-
-
-	uint8_t ss = (customTime.tenthSecond* 10+ customTime.seconds );
-
-    sprintf(RTCTime,"%d/%d/%d %d:%d:%d",dd,mo,yy,hh,mm,ss);
-}
-
 
 uint8_t rtc_displayAllTime()
 {
     RTCTimeRegisterStruct_s time;
     writeBuffer[0] = RTC_SECONDS_REGISTER;
-    if(i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,(uint8_t*)&time,sizeof(time)) != I2C_DRIVER_RW_SUCCESS)
-    {
-        return I2C_DRIVER_RW_FAILED;
-    }
+    i2c_readBurst(RTC_SLAVE_ADDRESS,writeBuffer,1,(uint8_t*)&time,sizeof(time));
 
     // printf("\r %d %d %d %d %d %d %d %d %d %d %d %d %d %d ",time.century,
     //         time.tenthMonth,time.month,time.tenthDate,time.date,time.day,time.hour_12_24,
     //         time.am_pm,time.tenthHour,time.hour,time.tenthMinutes,time.minutes,
     //         time.tenthSecond,time.seconds);
             
-    RTCDRIVER_PRINT("%d %d %d %d %d %d %d %d\tTime  = %d%d : %d%d : %d%d ",time.century,
+    printf("\r %d %d %d %d %d %d %d %d       Time  = %d%d : %d%d : %d%d  ",time.century,
             time.tenthMonth,time.month,time.tenthDate,time.date,time.day,time.hour_12_24,
-            time.hour_20_am_pm,   time.tenthHour,time.hour,time.tenthMinutes,time.minutes,
+            time.am_pm_20,   time.tenthHour,time.hour,time.tenthMinutes,time.minutes,
             time.tenthSecond,time.seconds);
             return 0;
 

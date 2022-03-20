@@ -79,10 +79,10 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
- DISABLE_COMPONENTS += BSP_DESIGN_MODUS
- COMPONENTS += CUSTOM_DESIGN_MODUS FREERTOS
-#DISABLE_COMPONENTS=
-#COMPONENTS+=FREERTOS
+COMPONENTS=
+
+# Like COMPONENTS, but disable optional code that was enabled by default.
+DISABLE_COMPONENTS=
 
 # By default the build system automatically looks in the Makefile's directory
 # tree for source code and builds it. The SOURCES variable can be used to
@@ -95,7 +95,7 @@ SOURCES=
 INCLUDES=
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES+=CYHAL_DISABLE_WEAK_FUNC_IMPL
+DEFINES=
 
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
@@ -130,10 +130,8 @@ LINKER_SCRIPT=
 # Custom pre-build commands to run.
 PREBUILD=
 
-DEBUG_PATH=./build/$(TARGET)/Debug
-
 # Custom post-build commands to run.
-POSTBUILD=arm-none-eabi-objcopy -O binary $(DEBUG_PATH)/$(APPNAME).elf $(DEBUG_PATH)/$(APPNAME).bin
+POSTBUILD=
 
 
 ################################################################################

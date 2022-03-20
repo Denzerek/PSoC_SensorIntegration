@@ -39,66 +39,42 @@
 * indemnify Cypress against all liability.
 *******************************************************************************/
 
-/*******************************************************************************
- *        Header Files
- *******************************************************************************/
+
 #include "common.h"
-#include "debug.h"
-#include "sdCardTask.h"
-#include "RTCTask.h"
-#include "softwareTimers.h"
+
+#include "sysConfig.h"
+#include "LCD_ScreenControl.h"
+#include "lcdDriver.h"
 
 
-void FreeRTOS_ComponentsInit();
 
-EventGroupHandle_t xCreatedEventGroup;
+
 int main(void)
 {
-
-    /* Initialize the device and board peripherals */
-    if (cybsp_init() != CY_RSLT_SUCCESS)
-    {
-        CY_ASSERT(0);
-    }
+	systemInit();
 
 
-    __enable_irq();
+    CyDelay(500);
+    clearLCD();
 
-    FreeRTOS_ComponentsInit();
 
-    xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
-#if 1
-    xTaskCreate(sdCardTask,"SD CARD TASK",8*1024,0,5,0);
+
+
+
     
-    xTaskCreate(RTCTask,"RTC TASK",8*1024,0,5,0);
-#endif
-    vTaskStartScheduler();
+    for (;;)
+    {
 
-    for(;;){}
-}
+    	ScreenDisplay_Task();
 
+        // CurrentScreenHandler_Task();
+//        Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);
+//        CyDelay(500);
+//        Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 1);
+//        CyDelay(100);
+//
 
-
-void FreeRTOS_ComponentsInit()
-{
-
-	  /* Attempt to create the event group. */
-	    xCreatedEventGroup = xEventGroupCreate();
-
-
-	    /* Was the event group created successfully? */
-	    if( xCreatedEventGroup == NULL )
-	    {
-	        /* The event group was not created because there was insufficient
-	        FreeRTOS heap available. */
-	    }
-	    else
-	    {
-	        /* The event group was created. */
-	        xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
-	    }
-
-	    softwareTimers_Init();
+    }
 }
 
 /* [] END OF FILE */

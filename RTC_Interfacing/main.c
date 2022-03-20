@@ -38,67 +38,64 @@
 * system or application assumes all risk of such use and in doing so agrees to
 * indemnify Cypress against all liability.
 *******************************************************************************/
-
-/*******************************************************************************
- *        Header Files
- *******************************************************************************/
 #include "common.h"
-#include "debug.h"
-#include "sdCardTask.h"
-#include "RTCTask.h"
-#include "softwareTimers.h"
+#include "rtc_driver.h"
 
 
-void FreeRTOS_ComponentsInit();
+//#define GREEN_LED    CYBSP_USER_LED4
+//#define BLUE_LED    CYBSP_USER_LED5
+//#define RED_LED    CYBSP_USER_LED3
+//#define LED_2       CYBSP_USER_LED2
+#define LED_1       CYBSP_USER_LED1
 
-EventGroupHandle_t xCreatedEventGroup;
+
+void retargetIOInit()
+{
+    /* Initialize the retarget-io */
+    cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, 115200);
+    
+    /* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
+    printf("\x1b[2J\x1b[;H \r");
+    printf("=========================================================\n\r");
+    printf(" RTC Interfacing with PSoC 6 \r\n");
+    printf("=========================================================\n\n\r");
+}
 int main(void)
 {
+    cy_rslt_t result;
 
     /* Initialize the device and board peripherals */
-    if (cybsp_init() != CY_RSLT_SUCCESS)
+    result = cybsp_init() ;
+    if (result != CY_RSLT_SUCCESS)
     {
         CY_ASSERT(0);
     }
 
-
     __enable_irq();
 
-    FreeRTOS_ComponentsInit();
+    retargetIOInit();
 
-    xTaskCreate(debugTask, "DEBUG TASK", 8*1024, 0, 1, 0);
-#if 1
-    xTaskCreate(sdCardTask,"SD CARD TASK",8*1024,0,5,0);
-    
-    xTaskCreate(RTCTask,"RTC TASK",8*1024,0,5,0);
-#endif
-    vTaskStartScheduler();
+//    cyhal_gpio_init(GREEN_LED,CYHAL_GPIO_DIR_OUTPUT,CYHAL_GPIO_DRIVE_STRONG,0);
+//    cyhal_gpio_init(BLUE_LED,CYHAL_GPIO_DIR_OUTPUT,CYHAL_GPIO_DRIVE_STRONG,0);
+//    cyhal_gpio_init(RED_LED,CYHAL_GPIO_DIR_OUTPUT,CYHAL_GPIO_DRIVE_STRONG,0);
+//    cyhal_gpio_init(LED_2,CYHAL_GPIO_DIR_OUTPUT,CYHAL_GPIO_DRIVE_STRONG,0);
+//    cyhal_gpio_init(LED_1,CYHAL_GPIO_DIR_OUTPUT,CYHAL_GPIO_DRIVE_STRONG,0);
 
-    for(;;){}
-}
+    i2c_init();
 
-
-
-void FreeRTOS_ComponentsInit()
-{
-
-	  /* Attempt to create the event group. */
-	    xCreatedEventGroup = xEventGroupCreate();
-
-
-	    /* Was the event group created successfully? */
-	    if( xCreatedEventGroup == NULL )
-	    {
-	        /* The event group was not created because there was insufficient
-	        FreeRTOS heap available. */
-	    }
-	    else
-	    {
-	        /* The event group was created. */
-	        xEventGroupClearBits(xCreatedEventGroup,DEBUG_TASK_EVENT_BIT);
-	    }
-
-	    softwareTimers_Init();
+    uint8_t write[4]={0,0,0,0};
+    uint8_t read[4]={0,0,0,0};
+    // rtc_setTime(2021,11,14,7,1,59,55);
+    printf("\r\n\n");
+    for (;;)
+    { 
+        // i2c_readBurst(0x68,write,1,read,4);
+        //printf("\r %d %d %d %d | %d%d sec",read[3],read[2],read[1],read[0],read[0]>>4,read[0]&0x0F);
+        printf("\r%d Year %d month %d Date %d Day %d hr %d min %d  sec",rtc_getYear(),rtc_getMonth(),rtc_getDate(),rtc_getDay(),rtc_getHours(),rtc_getMinutes(),rtc_getSeconds());
+//        rtc_displayAllTime();
+        fflush(stdout);
+        CyDelay(100);
+    }
 }
 
 /* [] END OF FILE */

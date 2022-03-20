@@ -34,7 +34,7 @@
 # configurations. If TARGET is manually edited, ensure TARGET_<BSP>.mtb with a 
 # valid URL exists in the application, run 'make getlibs' to fetch BSP contents
 # and update or regenerate launch configurations for your IDE.
-TARGET=CY8CPROTO-062-4343W
+TARGET=CY8CKIT-062-BLE
 
 # Name of application (used to derive name of final linked file).
 # 
@@ -81,8 +81,6 @@ VERBOSE=
 #
  DISABLE_COMPONENTS += BSP_DESIGN_MODUS
  COMPONENTS += CUSTOM_DESIGN_MODUS FREERTOS
-#DISABLE_COMPONENTS=
-#COMPONENTS+=FREERTOS
 
 # By default the build system automatically looks in the Makefile's directory
 # tree for source code and builds it. The SOURCES variable can be used to
@@ -95,7 +93,7 @@ SOURCES=
 INCLUDES=
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES+=CYHAL_DISABLE_WEAK_FUNC_IMPL
+DEFINES=
 
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
@@ -130,10 +128,8 @@ LINKER_SCRIPT=
 # Custom pre-build commands to run.
 PREBUILD=
 
-DEBUG_PATH=./build/$(TARGET)/Debug
-
 # Custom post-build commands to run.
-POSTBUILD=arm-none-eabi-objcopy -O binary $(DEBUG_PATH)/$(APPNAME).elf $(DEBUG_PATH)/$(APPNAME).bin
+POSTBUILD=
 
 
 ################################################################################

@@ -76,6 +76,7 @@ void RTCTask()
 
     		sprintf( RTCGlobalTime,RTC_RTCGlobalTime_NA);
             checkI2CHardwareErrorStatus();
+            vTaskDelay(1000);
     		rtcProcess = RTC_IDLE;
         	break;
         case RTC_INIT:
