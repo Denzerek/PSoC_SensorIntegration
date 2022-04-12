@@ -8,7 +8,7 @@ and pressure) is displayed with dynamic horizontal bar graph on the graphic LCD.
 It also demonstrates the display of images like the Infineon LOGO in the case of this code example on the graphic LCD.
 The images were converted to array format using the LCD assistant tool provided by New Haven
 
-https://github.com/Denzerek/PSoC_SensorIntegration/blob/main/MonitoringSystem_Xensive/MonitoringSystemXensive.mp4
+Demo video : MonitoringSystemXensive.mp4
 
 ## Hardware
 - [PSoC&trade; 6 Bluetooth&reg; LE pioneer kit](https://www.cypress.com/CY8CKIT-062-BLE) (`CY8CKIT-062-BLE`)
