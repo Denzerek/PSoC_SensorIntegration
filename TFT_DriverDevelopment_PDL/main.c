@@ -40,11 +40,11 @@
 * so agrees to indemnify Cypress against all liability.
 *******************************************************************************/
 
+#include <tft_app.h>
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
 #include "cy_retarget_io.h"
-#include "tft_api.h"
 
 
 /*******************************************************************************
@@ -133,6 +133,7 @@ int main(void)
     tft_printDisplayStatus();
     tft_init_sequence();
     tft_printDisplayStatus();
+    uint8_t counter;
     for (;;)
     {
     }

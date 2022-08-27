@@ -1,7 +1,7 @@
 /*
- * tft_hal.h
+ * tft_driver.h
  *
- *  Created on: 27-Aug-2022
+ *  Created on: 26-Aug-2022
  *      Author: AustinA
  */
 
@@ -9,7 +9,6 @@
 #define TFT_HAL_H_
 
 
-void TFT_24_7789_Init(void);
 
 
 
