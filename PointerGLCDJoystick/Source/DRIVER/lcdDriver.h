@@ -19,6 +19,8 @@ typedef enum{
 	CLEAR_PIXEL,
 	SET_PIXEL
 }pixelState_e;
+
+
 #define setLCDPixel(x,y)	LCDPixelManipulate( x, y,SET_PIXEL)
 #define clearLCDPixel(x,y)	LCDPixelManipulate( x, y,CLEAR_PIXEL)
 
@@ -39,5 +41,7 @@ void LCDPixelManipulate(uint8_t x,uint8_t y,pixelState_e clear);
 void setAllPixelsTo(uint8_t data);
 
 void printContinuousBytes(uint8_t *array);
+
+void clearLCD();
 
 #endif /* LCDDRIVER_H_ */

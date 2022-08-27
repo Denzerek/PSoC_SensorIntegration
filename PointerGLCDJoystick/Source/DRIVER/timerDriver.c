@@ -14,7 +14,6 @@
 
 #define HEARTBEAT_TIME	100
 static volatile uint32_t heartBeatCounter;
-static volatile bool heartBeatFlag = false;
 
 
 #define LCD_SCREEN_UPDATE_TIMER	30

@@ -144,6 +144,7 @@ uint8_t rtc_Reset()
     .tenthMonth= 0,
     .century= 0,
     };
+    RTCDRIVER_PRINT("Executing command RTC\r\n");
     return i2c_writeBurst(RTC_SLAVE_ADDRESS,RTC_SECONDS_REGISTER,(uint8_t*)&time,sizeof(time));
 }
 

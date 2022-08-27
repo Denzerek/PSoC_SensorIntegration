@@ -30,10 +30,10 @@
 #define true 1
 
 // Use DMA for debuging via UART
-//#define SERIAL_DEBUG_WITH_DMA
+#define SERIAL_DEBUG_WITH_DMA
 
 // Display the date and time along with debug data
-#define DEBUG_DISPLAY_DATE_TIME
+//#define DEBUG_DISPLAY_DATE_TIME
 
 
 //Application Debug
@@ -50,6 +50,9 @@
 #define SDCARD_HAL_DEBUG_ENABLE
 
 
+#if !defined(configUSE_PREEMPTION)
+#define vTaskDelay()
+#endif
 
 
 #define DEBUG_TASK_EVENT_BIT        ( 1 << 0 )

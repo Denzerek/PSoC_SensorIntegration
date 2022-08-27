@@ -335,10 +335,30 @@
                 <Block location="ioss[0].port[6].pin[0]">
                     <Alias value="CYBSP_I2C_SCL"/>
                     <Alias value="CYBSP_D15"/>
+                    <Personality template="mxs40pin" version="1.1">
+                        <Param id="DriveModes" value="CY_GPIO_DM_OD_DRIVESLOW"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
+                        <Param id="sioOutputBuffer" value="true"/>
+                        <Param id="inFlash" value="true"/>
+                    </Personality>
                 </Block>
                 <Block location="ioss[0].port[6].pin[1]">
                     <Alias value="CYBSP_I2C_SDA"/>
                     <Alias value="CYBSP_D14"/>
+                    <Personality template="mxs40pin" version="1.1">
+                        <Param id="DriveModes" value="CY_GPIO_DM_OD_DRIVESLOW"/>
+                        <Param id="initialState" value="1"/>
+                        <Param id="vtrip" value="CY_GPIO_VTRIP_CMOS"/>
+                        <Param id="isrTrigger" value="CY_GPIO_INTR_DISABLE"/>
+                        <Param id="slewRate" value="CY_GPIO_SLEW_FAST"/>
+                        <Param id="driveStrength" value="CY_GPIO_DRIVE_1_2"/>
+                        <Param id="sioOutputBuffer" value="true"/>
+                        <Param id="inFlash" value="true"/>
+                    </Personality>
                 </Block>
                 <Block location="ioss[0].port[6].pin[2]">
                     <Alias value="CYBSP_A7"/>
@@ -647,6 +667,32 @@
                         <Param id="startOnReset" value="true"/>
                     </Personality>
                 </Block>
+                <Block location="peri[0].div_8[2]">
+                    <Personality template="mxs40peripheralclock" version="1.0">
+                        <Param id="intDivider" value="10"/>
+                        <Param id="fracDivider" value="0"/>
+                        <Param id="startOnReset" value="true"/>
+                    </Personality>
+                </Block>
+                <Block location="scb[3]">
+                    <Alias value="CYBSP_I2C"/>
+                    <Personality template="mxs40i2c" version="2.0">
+                        <Param id="ModeUser" value="CY_SCB_I2C_MASTER"/>
+                        <Param id="ManualDataRateCtrl" value="false"/>
+                        <Param id="ManualDigitalFilter" value="true"/>
+                        <Param id="ManualLowPhaseDutyCycle" value="16"/>
+                        <Param id="ManualHighPhaseDutyCycle" value="9"/>
+                        <Param id="DataRate" value="400"/>
+                        <Param id="EnableTxFifo" value="true"/>
+                        <Param id="AcceptAddress" value="false"/>
+                        <Param id="EnableRxFifo" value="true"/>
+                        <Param id="EnableWakeup" value="false"/>
+                        <Param id="SlaveAddress" value="8"/>
+                        <Param id="SlaveAddressMask" value="254"/>
+                        <Param id="AcceptGeneralCall" value="false"/>
+                        <Param id="inFlash" value="true"/>
+                    </Personality>
+                </Block>
                 <Block location="srss[0].clock[0]">
                     <Personality template="mxs40sysclocks" version="1.2"/>
                 </Block>
@@ -815,8 +861,20 @@
                     <Port name="srss[0].clock[0].wco[0].wco_out[0]"/>
                 </Net>
                 <Net>
+                    <Port name="ioss[0].port[6].pin[0].digital_inout[0]"/>
+                    <Port name="scb[3].i2c_scl[0]"/>
+                </Net>
+                <Net>
+                    <Port name="ioss[0].port[6].pin[1].digital_inout[0]"/>
+                    <Port name="scb[3].i2c_sda[0]"/>
+                </Net>
+                <Net>
                     <Port name="peri[0].div_8[1].clk[0]"/>
                     <Port name="tcpwm[0].cnt[3].clock[0]"/>
+                </Net>
+                <Net>
+                    <Port name="peri[0].div_8[2].clk[0]"/>
+                    <Port name="scb[3].clock[0]"/>
                 </Net>
                 <Mux name="sense" location="csd[0].csd[0]">
                     <Arm>

@@ -15,6 +15,8 @@
 
 #include <stdarg.h>
 
+#define FONT_SIZE	6
+
 #define lcdPrintLineOver(string,lineNum)	lcdPrint(string,0,lineNum,true,false)
 #define lcdPrintLineOverAt(string,x,lineNum)	lcdPrint(string,x,lineNum,true,false)
 #define lcdPrintLine(string,lineNum)		lcdPrint(string,0,lineNum,false,false)
@@ -22,7 +24,8 @@
 #define lcdPrintLineIAt(string,x,lineNum)		lcdPrint(string,x,lineNum,false,true)
 #define lcdPrintLineOverI(string,lineNum)	lcdPrint(string,0,lineNum,true,true)
 #define lcdPrintLineOverIAt(string,x,lineNum)	lcdPrint(string,x,lineNum,true,true)
-#define FONT_SIZE	6
+
+
 typedef struct{
     char Letter;
     uint8_t LCDPixelData[FONT_SIZE];

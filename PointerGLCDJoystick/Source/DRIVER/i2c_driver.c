@@ -1,5 +1,6 @@
 #include "i2c_driver.h"
 #include "i2c.h"
+#include "stdlib.h"
 
 typedef struct{
     uint32_t i2cEvent;
@@ -45,7 +46,7 @@ void i2cStatusDecode( uint32_t i2cStatus)
 
 
 
-i2cDriverState_t i2c_interrupt_eventsCallback(uint32_t event)
+void i2c_interrupt_eventsCallback(uint32_t event)
 {
     if((CY_SCB_I2C_MASTER_ERR_EVENT & event ) == CY_SCB_I2C_MASTER_ERR_EVENT)
     {
@@ -190,7 +191,6 @@ i2cDriverState_t i2c_readByte(uint8_t address,uint8_t registerAddress,uint8_t* r
 {
     if(hardwareErrorFlag){*readData = 0x00;return I2C_DRIVER_RW_FAILED;}
     cy_stc_scb_i2c_master_xfer_config_t transfer;
-    uint8_t readByte = 0;
     uint8_t writeBuffer[1UL] = {registerAddress};
     /* Configure write transaction */
     transfer.slaveAddress = address;

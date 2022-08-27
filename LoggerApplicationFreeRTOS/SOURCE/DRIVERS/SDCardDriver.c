@@ -45,6 +45,7 @@ sdCardConnectivityProcess_t sdCardConnectivityProcess()
 		case CARD_ABSENT:
 			cardStatus = CARD_ABSENT;
             sdCardConnectivityProcessState = CARD_IDLE;
+			SDDRIVER_PRINT(" CARD_ABSENT");
 			break;
         case CARD_IDLE:
             taskYIELD();
@@ -63,7 +64,6 @@ sdCardConnectivityProcess_t sdCardConnectivityProcess()
 			if(Cy_GPIO_Read(SDHC1_CARD_DETECT_N_NUM_PORT, SDHC1_CARD_DETECT_N_NUM_PIN))
 			{
 				sdCardConnectivityProcessState = CARD_ABSENT ;
-				SDDRIVER_PRINT(" CARD_ABSENT");
 			}
 			else
 			{
@@ -81,7 +81,6 @@ sdCardConnectivityProcess_t sdCardConnectivityProcess()
 			else
 			{
 				sdCardConnectivityProcessState = CARD_ABSENT;
-				SDDRIVER_PRINT(" CARD_ABSENT");
 			}
 			break;
 		case CARD_INSERTED_INITIALIZED:

@@ -39,18 +39,22 @@
 * indemnify Cypress against all liability.
 *******************************************************************************/
 
-
-#include "common.h"
-
 #include "sysConfig.h"
 #include "LCD_ScreenControl.h"
-#include "lcdDriver.h"
+#include "xensiv_dps3xx_mtb.h"
+#include "xensiv_dps3xx.h"
+#include "cy_retarget_io.h"
 
 
-
+xensiv_dps3xx_t DPS3xx_Sensor;
+cyhal_i2c_t* i2c;
 
 int main(void)
 {
+    cy_rslt_t result;
+    uint32_t revisionID = 0;
+    float pressure, temperature;
+
 	systemInit();
 
 
@@ -58,21 +62,63 @@ int main(void)
     clearLCD();
 
 
+    /* Initialize retarget-io to use the debug UART port */
+    result = cy_retarget_io_init(CYBSP_DEBUG_UART_TX,
+                                    CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
+    CY_ASSERT(result == CY_RSLT_SUCCESS);
 
-
+    CyDelay(500);
+    /* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
+    printf("\x1b[2J\x1b[;H \r");
+    printf("=========================================================\n\r");
+    printf("  PSoC 6 MCU:  Interfacing DPS3xx Pressure Sensor \r\n");
+    printf("=========================================================\n\n\r");
+    /* Initialize pressure sensor */
+    result = xensiv_dps3xx_mtb_init_i2c(&DPS3xx_Sensor, i2c,
+                                        XENSIV_DPS3XX_I2C_ADDR_DEFAULT);
 
     
+
+    if (result != CY_RSLT_SUCCESS)
+    {
+        printf("\r\nFailed to initialize DPS3xx I2C\r\n");
+        CY_ASSERT(0);
+    }
+
+    /* Retrieve the DPS3xx Revision ID and display the same */
+    if(xensiv_dps3xx_get_revision_id(&DPS3xx_Sensor,(uint8_t*)&revisionID) == CY_RSLT_SUCCESS)
+    {
+        printf("DPS3xx Revision ID = %d\r\n\n",(uint8_t)revisionID);
+    }
+    else
+    {
+        printf("Failed to get Revision ID\r\n");
+        CY_ASSERT(0);
+    }
+
+    for (;;)
+    {
+        /* Read the pressure and temperature data */
+        if(xensiv_dps3xx_read(&DPS3xx_Sensor, &pressure, &temperature) == CY_RSLT_SUCCESS)
+        {
+            /* Display the pressure and temperature data in console*/
+            printf("Pressure : %f mBar",pressure);
+            printf(" \t Temperature: %f degreeCelcius \r\n",temperature);
+        }
+        else
+        {
+            printf("\n Failed to read temperature and pressure data.\r\n");
+            CY_ASSERT(0);
+        }
+
+        /* Generate a delay of 1 second before next read */
+        cyhal_system_delay_ms(1000);
+    }
+
     for (;;)
     {
 
     	ScreenDisplay_Task();
-
-        // CurrentScreenHandler_Task();
-//        Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 0);
-//        CyDelay(500);
-//        Cy_GPIO_Write(CYBSP_LED_RGB_GREEN_PORT, CYBSP_LED_RGB_GREEN_PIN, 1);
-//        CyDelay(100);
-//
 
     }
 }

@@ -58,14 +58,6 @@ int main(void)
     	ScreenDisplay_Task();
 
 
-    	//if(sarADC_ConversionStatus() == CY_SAR_SUCCESS)
-    	{
-//    		printf("\t%d\t%d\r\n",sarADC_GetResultWord(0),sarADC_GetResultWord(1));
-    		printf("\t%d\t%d\r\n",getChannel_0_Result(),getChannel_1_Result());
-//    		sarADC_StartConversion_Single();
-    	}
-
-
     }
 }
 

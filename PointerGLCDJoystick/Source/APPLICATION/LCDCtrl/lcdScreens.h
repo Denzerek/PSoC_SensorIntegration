@@ -13,18 +13,29 @@
 #include "cybsp.h"
 
 
+typedef enum{
+	SCREEN_INIT,
+	SCREEN_UPDATE,
+}screenStates_t;
+
+typedef enum{
+	SCREEN_MIN,
+	InfineonLogoScreen_n,
+	joystickCalibration_n,
+	SCREEN_MAX
+}lcdScreens_n;
+
+typedef struct{
+	uint8_t currentScreen;
+	void (*screenHandler)();
+	bool screenUpdate;
+}lcdScreens_s;
 
 void lcdSwitchScreens();
 bool lcdScreenUpdateRequired();
 void updateCurrentScreen();
 
-void CirclesDemo();
+void joystickCalibration();
 void InfineonLogoScreen();
-void ConcentriRectangleDemo();
-void BarGrsphDemo();
-void fontDemo();
-void lcdOverWritePrintDemo();
-void lcdOverWriteInvertPrintDemo();
-void tempPressureMonitor();
 
 #endif /* SOURCE_APPLICATION_LCDSCREENS_H_ */

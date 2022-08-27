@@ -9,6 +9,7 @@
 
 
 #include "timer.h"
+#include "stdio.h"
 
 
 void clearTimerInterrupt(uint32_t intrSource)

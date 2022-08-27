@@ -57,7 +57,7 @@ uint8_t getLCDData(uint8_t x, uint8_t y,lcdHalf_e halfselect)
 
 uint8_t getLCDContexData()
 {
-	uint8_t readData;
+	uint8_t readData = 0;
 	switch(glcdContextHalf)
 	{
 	case LCD_HALF_1:

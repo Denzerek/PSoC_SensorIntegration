@@ -8,8 +8,12 @@
 
 #include "LCD_ScreenControl.h"
 #include "lcdScreens.h"
+#include "lcdDriver.h"
+#include "glcdShapes.h"
 #include "buttonDriver.h"
 #include "timerDriver.h"
+
+#define IGNORE_SPLASH_SCREEn
 
 
 typedef enum{
@@ -23,7 +27,13 @@ typedef enum{
 
 }lcdScreenState_e;
 
+#ifndef IGNORE_SPLASH_SCREEn
 lcdScreenState_e lcdScreenState = LCD_SPLASH;
+#else
+lcdScreenState_e lcdScreenState = LCD_SWITCH_SCREEN;
+#endif
+
+
 void ScreenDisplay_Task()
 {
 

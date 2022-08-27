@@ -19,14 +19,14 @@ uint8_t retrievalBuffer[200];
 
 
 taskMsgStruct_s taskMsgCollection[] = {
-		{DEBUG_TASKMSG,"[ DEBUG ] : "},
-		{SDCARD_TASKMSG,"[ SD TASK ] : "},
-		{SDDRIVER_TASKMSG,"[ SD DRIVER ] : "},
-		{SDHAL_TASKMSG,"[ SD HAL ] : "},
-		{RTCDRIVER_TASKMSG,"[ RTC DRIVER ] : "},
-		{I2CHAL_TASKMSG,"[ I2C HAL] : "},
-		{I2CDRIVER_TASKMSG,"[ I2C DRIVER ] : "},
-		{RTCTASK_TASKMSG,"[ RTC TASK ] : "}
+		{DEBUG_TASKMSG,			"[ DEBUG ] : "		},
+		{SDCARD_TASKMSG,		"[ SD TASK ] : "	},
+		{SDDRIVER_TASKMSG,		"[ SD DRIVER ] : "	},
+		{SDHAL_TASKMSG,			"[ SD HAL ] : "		},
+		{RTCDRIVER_TASKMSG,		"[ RTC DRIVER ] : "	},
+		{I2CHAL_TASKMSG,		"[ I2C HAL] : "		},
+		{I2CDRIVER_TASKMSG,		"[ I2C DRIVER ] : "	},
+		{RTCTASK_TASKMSG,		"[ RTC TASK ] : "	}
 };
 
 
@@ -45,10 +45,12 @@ commandStruct_s commandHolder[]={
 void debug_ReceptionData_Handler(uint8_t* receptionData)
 {
 	int i;
-	for(i = 0;receptionData[i] != '\0'&& receptionData[i] != '\r' &&receptionData[i] != '\n';i++){}
+	if(*receptionData == '\0' || *receptionData == '\r' || *receptionData == '\n')
+		return;
+	for(i = 0;receptionData[i] != '\0' && receptionData[i] != '\r' && receptionData[i] != '\n';i++){}
 	receptionData[i] = '\0';
 
-	DEBUG_PRINT("Command : %s",receptionData);
+	DEBUG_PRINT("Command = %s",receptionData);
 	for(int i = 0 ; i < sizeof(commandHolder)/sizeof(commandStruct_s);i++)
 	{
 		if(!strcmp(commandHolder[i].command,receptionData))
@@ -61,9 +63,9 @@ void debug_ReceptionData_Handler(uint8_t* receptionData)
 				DEBUG_PRINT("DONE");
 		}
 	}
-
-	switchCurrentSerialQueue();
+	*receptionData = '\0';
 	dmaStartTransfer();
+	switchCurrentSerialQueue();
 }
 
 
@@ -147,7 +149,7 @@ void debugTransmit(dbgHeader_t dbgHeader, ...)
 #ifdef DEBUG_DISPLAY_DATE_TIME
 			sprintf(myData1,"%s %s%s\r\n",RTCGlobalTime,taskMsgCollection[i].stringHeader,myData);
 #else
-			sprintf(myData1,"%s%s\r\n",RTCGlobalTime,taskMsgCollection[i].stringHeader,myData);
+			sprintf(myData1,"%s%s\r\n",taskMsgCollection[i].stringHeader,myData);
 #endif
 			serialDebugTransmit(myData1);
 			return;

@@ -18,6 +18,7 @@ cy_stc_sysint_t UDMA_INT_cfg =
 
 void dmaStartTransfer()
 {
+	Cy_DMA_Channel_Init(UDMA_HW, UDMA_CHANNEL, &UDMA_channelConfig);
     Cy_DMA_Channel_Enable(UDMA_HW, UDMA_CHANNEL);
 }
 
@@ -31,11 +32,7 @@ void dmaInit(cy_israddress *dmaTxInterruptHandler)
     {
         CY_ASSERT(0);
     }
-    dma_init_status = Cy_DMA_Channel_Init(UDMA_HW, UDMA_CHANNEL, &UDMA_channelConfig);
-    if (dma_init_status!=CY_DMA_SUCCESS)
-    {
-        CY_ASSERT(0);
-    }
+
 
     /* Set source and destination for descriptor 1 */
     Cy_DMA_Descriptor_SetDstAddress(&UDMA_Descriptor_0, (uint32_t *) &(UART_HW->TX_FIFO_WR));
@@ -43,7 +40,7 @@ void dmaInit(cy_israddress *dmaTxInterruptHandler)
     /* Set next descriptor to NULL to stop the chain execution after descriptor 1
     *  is completed.
     */
-    Cy_DMA_Descriptor_SetNextDescriptor(Cy_DMA_Channel_GetCurrentDescriptor(UDMA_HW, UDMA_CHANNEL), &UDMA_Descriptor_0);
+    Cy_DMA_Descriptor_SetNextDescriptor(&UDMA_Descriptor_0, &UDMA_Descriptor_0);
 
     /* Initialize and enable the interrupt from UDMA */
     Cy_SysInt_Init  (&UDMA_INT_cfg, dmaTxInterruptHandler);
@@ -58,8 +55,6 @@ void dmaInit(cy_israddress *dmaTxInterruptHandler)
     */
     Cy_DMA_Enable(UDMA_HW);
 
-
-    Cy_DMA_Channel_SetDescriptor(UDMA_HW, UDMA_CHANNEL, &UDMA_Descriptor_0);
 }
 
 

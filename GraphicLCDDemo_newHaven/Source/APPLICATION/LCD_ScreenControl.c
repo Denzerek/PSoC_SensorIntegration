@@ -10,6 +10,7 @@
 #include "lcdScreens.h"
 #include "buttonDriver.h"
 #include "timerDriver.h"
+#include "glcdShapes.h"
 
 
 typedef enum{

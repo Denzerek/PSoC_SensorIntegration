@@ -11,7 +11,7 @@
 #include "sarADC.h"
 
 
-static volatile uint16_t ADCResult[2];
+static int16_t ADCResult[2];
 
 void dma_Init()
 {
@@ -51,13 +51,13 @@ void sarADC_Init()
     dma_Init();
 }
 
-uint16_t getChannel_0_Result()
+int16_t getChannel_0_Result()
 {
 	return ADCResult[0];
 }
 
 
-uint16_t getChannel_1_Result()
+int16_t getChannel_1_Result()
 {
 	return ADCResult[1];
 }

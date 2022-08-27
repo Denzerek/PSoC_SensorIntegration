@@ -15,5 +15,8 @@
 #include "cybsp.h"
 #include "glcdPrints.h"
 
+#if !defined(configUSE_PREEMPTION)
+#define vTaskDelay(x)
+#endif
 
 #endif /* SOURCE_APPLICATION_COMMON_H_ */
