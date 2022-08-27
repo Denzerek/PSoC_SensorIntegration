@@ -105,89 +105,9 @@ void TFT_delay(uint32_t time)
 	cyhal_system_delay_us(time);
 }
 
-
-
-void tft_getDisplayStatus(uint8_t* data)
-{
-	st7789v_pdl_write_command(0x09);
-	st7789v_pdl_read_data_stream(data,5);
-}
-
-typedef struct{
-	uint8_t res1:8;
-
-	uint8_t BSTON:1;
-	uint8_t MY:1;
-	uint8_t MX:1;
-	uint8_t MV:1;
-	uint8_t ML:1;
-	uint8_t RGB:1;
-	uint8_t MH:1;
-	uint8_t ST24:1;
-
-	uint8_t ST23:1;
-	uint8_t IFPF2:1;
-	uint8_t IFPF1:1;
-	uint8_t IFPF0:1;
-	uint8_t IDMON:1;
-	uint8_t PTLON:1;
-	uint8_t SLOUT:1;
-	uint8_t NORON:1;
-
-	uint8_t ST15:1;
-	uint8_t ST14:1;
-	uint8_t IVON:1;
-	uint8_t ST12:1;
-	uint8_t ST11:1;
-	uint8_t DISON:1;
-	uint8_t TEON:1;
-	uint8_t GCS2:1;
-
-	uint8_t GCS1:1;
-	uint8_t GCS0:1;
-	uint8_t TEM:1;
-	uint8_t ST4:1;
-	uint8_t ST3:1;
-	uint8_t ST2:1;
-	uint8_t ST1:1;
-	uint8_t ST0:1;
-}tft_display_status_t;
-
-
-void tft_printDisplayStatus(){
-	tft_display_status_t tft_display_status;
-	tft_getDisplayStatus(&tft_display_status);
-	printf("Display Status : %X\r\n",tft_display_status);
-
-
-	printf("res1 : %X\r\n",*((uint8_t*)(&tft_display_status)));
-	printf("BSTON : %X\r\n",*((uint8_t*)(&tft_display_status)+1));
-	printf("ST23 : %X\r\n",*((uint8_t*)(&tft_display_status)+2));
-	printf("ST15 : %X\r\n",*((uint8_t*)(&tft_display_status)+3));
-	printf("GCS1 : %X\r\n",*((uint8_t*)(&tft_display_status)+4));
-
-//	printf("res1 : %X\r\n",tft_display_status.res1);
-//	printf("BSTON : %X\r\n",tft_display_status.BSTON);
-	printf("ST23 : %X\r\n",tft_display_status.ST23);
-	printf("IFPF2 : %X\r\n",tft_display_status.IFPF2);
-	printf("IFPF1 : %X\r\n",tft_display_status.IFPF1);
-	printf("IFPF0 : %X\r\n",tft_display_status.IFPF0);
-	printf("IDMON : %X\r\n",tft_display_status.IDMON);
-	printf("PTLON : %X\r\n",tft_display_status.PTLON);
-	printf("SLOUT : %X\r\n",tft_display_status.SLOUT);
-	printf("NORON : %X\r\n",tft_display_status.NORON);
-//
-//	printf("ST15 : %X\r\n",tft_display_status.ST15);
-//	printf("ST14 : %X\r\n",tft_display_status.ST14);
-//	printf("IVON : %X\r\n",tft_display_status.IVON);
-//	printf("ST12 : %X\r\n",tft_display_status.ST12);
-//	printf("ST11 : %X\r\n",tft_display_status.ST11);
-//	printf("DISON : %X\r\n",tft_display_status.DISON);
-//	printf("TEON : %X\r\n",tft_display_status.TEON);
-//	printf("GCS2 : %X\r\n",tft_display_status.GCS2);
-
-}
 /*******************************************************************************/
+
+
 void TFT_24_7789_Init(void)
 {
 	int n;
@@ -215,58 +135,58 @@ void TFT_24_7789_Init(void)
 
 
 
-	st7789v_pdl_write_command(0x04);
-	st7789v_pdl_read_data_stream(readDataStream,4);
-	printf("TFT ID : %X %X %X\r\n",readDataStream[1],readDataStream[2],readDataStream[3]);
-
-	st7789v_pdl_write_command(0x0DA);
-	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
-	st7789v_pdl_write_command(0x0DB);
-	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
-	st7789v_pdl_write_command(0x0DC);
-	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
-
-
-
-
-	st7789v_pdl_write_command(0x003A);
-	st7789v_pdl_write_data(0x55);//COLMOD: Interface Pixel format
-
-
-//	st7789v_pdl_write_command(0xB5);
-//	st7789v_pdl_write_data(0x0F);
-		st7789v_pdl_write_command(0x39);
-
-	tft_printDisplayStatus();
-	st7789v_pdl_write_command(0x09);
-	//	st7789v_pdl_read_data_stream(readDataStream,4);
-	//	printf("Display Status : %X %X %X %X %X \r\n",readDataStream[0],readDataStream[1],readDataStream[2],readDataStream[3],readDataStream[4]);
-		printf("Display Status : %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf("\r\n\n");
-
-
-//	st7789v_pdl_write_command(0xB5);
-//	st7789v_pdl_write_data(0x1F);
-	st7789v_pdl_write_command(0x38);
-
-	st7789v_pdl_write_command(0x003A);
-	st7789v_pdl_write_data(0x66);//COLMOD: Interface Pixel format
-
-
-	tft_printDisplayStatus();
-	st7789v_pdl_write_command(0x09);
-	//	st7789v_pdl_read_data_stream(readDataStream,4);
-	//	printf("Display Status : %X %X %X %X %X \r\n",readDataStream[0],readDataStream[1],readDataStream[2],readDataStream[3],readDataStream[4]);
-		printf("Display Status : %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf(" %X",st7789v_pdl_read_data());
-		printf("\r\n");
+//	st7789v_pdl_write_command(0x04);
+//	st7789v_pdl_read_data_stream(readDataStream,4);
+//	printf("TFT ID : %X %X %X\r\n",readDataStream[1],readDataStream[2],readDataStream[3]);
+//
+//	st7789v_pdl_write_command(0x0DA);
+//	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
+//	st7789v_pdl_write_command(0x0DB);
+//	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
+//	st7789v_pdl_write_command(0x0DC);
+//	printf("TFT ID : %X\r\n",st7789v_pdl_read_data());
+//
+//
+//
+//
+//	st7789v_pdl_write_command(0x003A);
+//	st7789v_pdl_write_data(0x55);//COLMOD: Interface Pixel format
+//
+//
+////	st7789v_pdl_write_command(0xB5);
+////	st7789v_pdl_write_data(0x0F);
+//		st7789v_pdl_write_command(0x39);
+//
+//	tft_printDisplayStatus();
+//	st7789v_pdl_write_command(0x09);
+//	//	st7789v_pdl_read_data_stream(readDataStream,4);
+//	//	printf("Display Status : %X %X %X %X %X \r\n",readDataStream[0],readDataStream[1],readDataStream[2],readDataStream[3],readDataStream[4]);
+//		printf("Display Status : %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf("\r\n\n");
+//
+//
+////	st7789v_pdl_write_command(0xB5);
+////	st7789v_pdl_write_data(0x1F);
+//	st7789v_pdl_write_command(0x38);
+//
+//	st7789v_pdl_write_command(0x003A);
+//	st7789v_pdl_write_data(0x66);//COLMOD: Interface Pixel format
+//
+//
+//	tft_printDisplayStatus();
+//	st7789v_pdl_write_command(0x09);
+//	//	st7789v_pdl_read_data_stream(readDataStream,4);
+//	//	printf("Display Status : %X %X %X %X %X \r\n",readDataStream[0],readDataStream[1],readDataStream[2],readDataStream[3],readDataStream[4]);
+//		printf("Display Status : %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf(" %X",st7789v_pdl_read_data());
+//		printf("\r\n");
 
 
 //	GPIO_ResetBits(GPIOC, CS1);	//Hardware wise set to LOW, hence no need to manipulate CS

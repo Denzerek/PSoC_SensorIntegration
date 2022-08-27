@@ -44,7 +44,7 @@
 #include "cyhal.h"
 #include "cybsp.h"
 #include "cy_retarget_io.h"
-#include "tft_hal.h"
+#include "tft_api.h"
 
 
 /*******************************************************************************
@@ -128,9 +128,11 @@ int main(void)
            "PSoC 6 MCU: TFT Testing "
            "****************** \r\n\n");
 
-    printf("Initializing TFT ...\r\n`");
-    TFT_24_7789_Init();
-    printf("Initializing TFT DONE\r\n");
+
+//    tft_sw_reset();
+    tft_printDisplayStatus();
+    tft_init_sequence();
+    tft_printDisplayStatus();
     for (;;)
     {
     }
