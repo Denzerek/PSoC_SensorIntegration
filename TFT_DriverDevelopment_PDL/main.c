@@ -78,23 +78,13 @@ uint8_t uart_read_value;
 cyhal_timer_t led_blink_timer;
 
 
-/*******************************************************************************
-* Function Name: main
-********************************************************************************
-* Summary:
-* This is the main function for CM4 CPU. It sets up a timer to trigger a 
-* periodic interrupt. The main while loop checks for the status of a flag set 
-* by the interrupt and toggles an LED at 1Hz to create an LED blinky. The 
-* while loop also checks whether the 'Enter' key was pressed and 
-* stops/restarts LED blinking.
-*
-* Parameters:
-*  none
-*
-* Return:
-*  int
-*
-*******************************************************************************/
+typedef struct{
+	uint8_t FRAME_RED;
+	uint8_t Frame_GREEN;
+	uint8_t FRAME_Blue;
+}frame_clr_t;
+
+frame_clr_t frame[40][40];
 int main(void)
 {
     cy_rslt_t result;
@@ -133,9 +123,26 @@ int main(void)
     tft_printDisplayStatus();
     tft_init_sequence();
     tft_printDisplayStatus();
+
+    uint32_t frame_Size = sizeof(frame);
+    memset(frame,0xFF,frame_Size);
+    printf("\r\nSize of Frame : %d\r\n",frame_Size);
+
+    tft_col_addr_set(0,40);
+    tft_row_addr_set(0,40);
+	st7789v_pdl_write_command(0x2C);
+
+    for(uint32_t i =0; i<40; i++)
+        for(uint32_t j =0; j<40; j++)
+            for(uint8_t k =0; k<3; k++)
+        	st7789v_pdl_write_data(((uint8_t*)&frame[i][j])[k]);
+
     uint8_t counter;
     for (;;)
     {
+    	pixelSet(0,0,0xFF,0xFF-counter,0xFF,counter++);
+//    	CyDelay(100);
+
     }
 }
 

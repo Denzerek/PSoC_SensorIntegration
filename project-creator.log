@@ -6,38 +6,69 @@ Successfully acquired the information.
 
 Summary: 
 
-BSP: CY8CKIT-062-BLE
-Template Application(s): MonitoringSystem
-Application(s) Root Path: C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration
+BSP: CY8CKIT-062-WIFI-BT
+Template Application(s): Empty PSoC6 App
+Application(s) Root Path: C:\Alen\GitHub_Denzerek\PSoC_SensorIntegration
 
 Press "Create" to create the selected application(s).
 Collecting application data...
 
 
 Info: The following entered on the command line will create the exact same project as that created with the GUI tool:
-C:/Users/Austina/ModusToolbox/tools_2.4/project-creator/project-creator-cli.exe --board-id CY8CKIT-062-BLE --board-uri https://github.com/cypresssemiconductorco/TARGET_CY8CKIT-062-BLE --board-commit latest-v3.X --app-path C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/MonitoringSystem --cypress-tools C:/Users/Austina/ModusToolbox/tools_2.4 --target-dir C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration --user-app-name PointerGLCDJoystick --output-for-machine --use-modus-shell
+C:/Users/Austina/ModusToolbox/tools_2.4/project-creator/project-creator-cli.exe --board-id CY8CKIT-062-WIFI-BT --board-uri https://github.com/cypresssemiconductorco/TARGET_CY8CKIT-062-WIFI-BT --board-commit latest-v3.X --app-id mtb-example-psoc6-empty-app --app-uri https://github.com/cypresssemiconductorco/mtb-example-psoc6-empty-app --app-commit latest-v3.X --cypress-tools C:/Users/Austina/ModusToolbox/tools_2.4 --target-dir C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration --user-app-name i2s_audio_test --output-for-machine --use-modus-shell
+
 
 ==============================================================================
-= Copying 'C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/MonitoringSystem' =
+= Cloning 'mtb-example-psoc6-empty-app' =
 ==============================================================================
+Cloning https://github.com/cypresssemiconductorco/mtb-example-psoc6-empty-app into C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration directory...
+env git clone --progress --origin cypress https://github.com/cypresssemiconductorco/mtb-example-psoc6-empty-app i2s_audio_test
+Cloning into 'i2s_audio_test'...
+remote: Enumerating objects: 40, done.        
+remote: Counting objects: 100% (9/9), done.        
+remote: Compressing objects: 100% (7/7), done.        
+remote: Total 40 (delta 5), reused 2 (delta 2), pack-reused 31        
+Receiving objects: 100% (40/40), 72.28 KiB | 6.57 MiB/s, done.
+Resolving deltas: 100% (14/14), done.
+
+Checking out latest-v3.X...
+env git checkout --progress latest-v3.X
+Note: switching to 'latest-v3.X'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at a9e053c Upload mtb-example-psoc6-empty-app 3.0.0.181
+
 ==============================================================================
-= Cleaning launch configurations =
+= Creating "TARGET_CY8CKIT-062-WIFI-BT.mtb" file(s) =
+==============================================================================
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/deps/TARGET_CY8CKIT-062-WIFI-BT.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/deps/TARGET_CY8CPROTO-062-4343W.mtb was removed
+
+==============================================================================
+= Updating Makefile for "i2s_audio_test" =
 ==============================================================================
 
 ==============================================================================
-= Creating "TARGET_CY8CKIT-062-BLE.mtb" file(s) =
+= Applying the Latest Version Locking for "i2s_audio_test" =
 ==============================================================================
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/deps/TARGET_CY8CKIT-062-WIFI-BT.mtb was updated
 
 ==============================================================================
-= Updating Makefile for "PointerGLCDJoystick" =
-==============================================================================
-
-==============================================================================
-= Applying the Latest Version Locking for "PointerGLCDJoystick" =
-==============================================================================
-
-==============================================================================
-= Getting Dependencies for "PointerGLCDJoystick" =
+= Getting Dependencies for "i2s_audio_test" =
 ==============================================================================
 C:/Users/Austina/ModusToolbox/tools_2.4/modus-shell/bin/make.exe getlibs CY_TOOLS_PATHS=C:/Users/Austina/ModusToolbox/tools_2.4
 Tools Directory: C:/Users/Austina/ModusToolbox/tools_2.4
@@ -53,84 +84,35 @@ Getting manifests from remote server...
 Processing super-manifest https://github.com/cypresssemiconductorco/mtb-super-manifest/raw/v2.X/mtb-super-manifest-fv2.xml...
 Successfully acquired the information.
 INFO - Warning: Multiple versions of "core-make" requested. Keeping version "latest-v1.X" and discarding version "release-v1.9.0".
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/capsense.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/core-lib.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/core-make.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/mtb-hal-cat1.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/mtb-pdl-cat1.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/psoc6cm0p.mtb was added
-C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/recipe-make-cat1a.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/capsense.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/core-lib.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/core-make.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/mtb-hal-cat1.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/mtb-pdl-cat1.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/psoc6cm0p.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/recipe-make-cat1a.mtb was added
+C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/udb-sdio-whd.mtb was added
 Dependencies resolved.
 
 Searching application directory (.mtb)...
 Found 9 .mtb file(s)
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/deps/TARGET_CY8CKIT-062-BLE.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/deps/retarget-io.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/capsense.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/core-lib.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/core-make.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/mtb-hal-cat1.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/mtb-pdl-cat1.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/psoc6cm0p.mtb"
-    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/recipe-make-cat1a.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/deps/TARGET_CY8CKIT-062-WIFI-BT.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/capsense.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/core-lib.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/core-make.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/mtb-hal-cat1.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/mtb-pdl-cat1.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/psoc6cm0p.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/recipe-make-cat1a.mtb"
+    Processing file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/udb-sdio-whd.mtb"
 Libraries processed.
-Created file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/PointerGLCDJoystick/libs/mtb.mk".
+Created file "C:/Alen/GitHub_Denzerek/PSoC_SensorIntegration/i2s_audio_test/libs/mtb.mk".
 
 
 ==============================================================================
 = Import complete =
 ==============================================================================
 
-Project "PointerGLCDJoystick" created successfully.
-==============================================================================
-= Export "PointerGLCDJoystick" application to Eclipse IDE for ModusToolbox™ =
-==============================================================================
-C:/Users/Austina/ModusToolbox/tools_2.4/modus-shell/bin/make.exe eclipse CY_IDE_PRJNAME=PointerGLCDJoystick CY_MAKE_IDE=eclipse CY_MAKE_IDE_VERSION=2.4 CY_TOOLS_PATHS=C:/Users/Austina/ModusToolbox/tools_2.4
-Tools Directory: C:/Users/Austina/ModusToolbox/tools_2.4
-CY8CKIT-062-BLE.mk: ./libs/TARGET_CY8CKIT-062-BLE/CY8CKIT-062-BLE.mk
+Project "i2s_audio_test" created successfully.
 
-Running device-configurator to update stale files...
-Log file= "C:/Users/Austina/AppData/Local/Temp/device-configurator-cli/device-configurator-cli-20220415.165933.106-31432.log"
-Command line= "C:/Users/Austina/ModusToolbox/tools_2.4/device-configurator/device-configurator-cli.exe --library ../mtb_shared/mtb-pdl-cat1/release-v2.4.0/devicesupport.xml --build ./COMPONENT_CUSTOM_DESIGN_MODUS/TARGET_CY8CKIT-062-BLE/design.modus --check-mcu=CY8C6347BZI-BLD53 --check-coprocessors= --readonly"
--> Generated device configuration file(s) in ./COMPONENT_CUSTOM_DESIGN_MODUS/TARGET_CY8CKIT-062-BLE/GeneratedSource
-
-Prebuild operations complete
-Commencing build operations...
-
-Tools Directory: C:/Users/Austina/ModusToolbox/tools_2.4
-CY8CKIT-062-BLE.mk: ./libs/TARGET_CY8CKIT-062-BLE/CY8CKIT-062-BLE.mk
-
-Initializing build: mtb-example-psoc6-empty-app Debug CY8CKIT-062-BLE GCC_ARM
-
-Auto-discovery in progress...
--> Found 247 .c file(s)
--> Found 46 .S file(s)
--> Found 22 .s file(s)
--> Found 0 .cpp file(s)
--> Found 0 .o file(s)
--> Found 6 .a file(s)
--> Found 607 .h file(s)
--> Found 0 .hpp file(s)
--> Found 0 resource file(s)
-Applying filters...
-Auto-discovery complete
-
-Constructing build rules...
-Build rules construction complete
-
-INFO: Eclipse project files ".cproject" and ".project" already exist. Skipping project generation...
-
-==============================================================================
-= Generating IDE files =
-==============================================================================
-
-Generated Eclipse launch config files:  "PointerGLCDJoystick Attach (JLink).launch" "PointerGLCDJoystick Attach (KitProg3_MiniProg4).launch" "PointerGLCDJoystick Debug (JLink).launch" "PointerGLCDJoystick Debug (KitProg3_MiniProg4).launch" "PointerGLCDJoystick Erase (JLink).launch" "PointerGLCDJoystick Erase (KitProg3_MiniProg4).launch" "PointerGLCDJoystick Program (JLink).launch" "PointerGLCDJoystick Program (KitProg3_MiniProg4).launch"
-
-============================================================================== 
-= INFO message(s) = 
-============================================================================== 
- INFO: Eclipse project files ".cproject" and ".project" already exist. Skipping project generation... 
- 
-The project "PointerGLCDJoystick" was successfully exported to Eclipse IDE for ModusToolbox™.
-
-Successfully created and exported "PointerGLCDJoystick" application.
+Successfully created "i2s_audio_test" application.

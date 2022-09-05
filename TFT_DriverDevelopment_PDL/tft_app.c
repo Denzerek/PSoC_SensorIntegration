@@ -20,7 +20,7 @@ void pixelSet(int x, int y, uint8_t r, uint8_t g, uint8_t b, uint32_t size)
     tft_col_addr_set(0+x,size+x);
     tft_row_addr_set(0+y,size+y);
 	st7789v_pdl_write_command(0x2C);
-	for(uint32_t i =0;i<SCREEN_MAX_SIZE;i++){
+	for(uint32_t i =0;i<(size*size);i++){
 	st7789v_pdl_write_data(r);
 	st7789v_pdl_write_data(g);
 	st7789v_pdl_write_data(b);}
@@ -42,8 +42,8 @@ void testPrint()
 	}
 
 	pixelSet(20,40,0,0xFF,0,40);
-    tft_col_addr_set(120/2,(120/2)+10);
-    tft_row_addr_set(240/2,(240/2)+10);
+	tft_x_addr_set(TFT_X_MAX/2,(TFT_X_MAX/2)+10);
+	tft_y_addr_set(TFT_Y_MAX/2,(TFT_Y_MAX/2)+10);
 	st7789v_pdl_write_command(0x2C);
 	for(uint32_t i =0;i<SCREEN_MAX_SIZE;i++){
 		st7789v_pdl_write_data(0xFF);

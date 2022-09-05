@@ -12,6 +12,12 @@
 #include "cyhal.h"
 #include "cybsp.h"
 
+#define TFT_X_MAX	320
+#define TFT_Y_MAX 	120
+
+#define tft_x_addr_set	 tft_col_addr_set
+#define tft_y_addr_set	 tft_row_addr_set
+
 
 typedef struct{
 	uint8_t res1:8;
